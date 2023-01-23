@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "243961147976",
+    "project_id": "couplediaryapp-fb3c8",
+    "storage_bucket": "couplediaryapp-fb3c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243961147976:android:85e213ece0cc119bb01e7d",
+        "android_client_info": {
+          "package_name": "com.example.couple_diary_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243961147976-ssenaodlhmp4cucjkfi16ek1a70f2810.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVRvs4XeHhhlUHLgcrI6o2smdbIBvoIHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243961147976-ssenaodlhmp4cucjkfi16ek1a70f2810.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "243961147976-3ppkullo5pp34qbmpqdba6vrs1jb1sqj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.coupleDiaryApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
