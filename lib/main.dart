@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         appBarTheme: AppBarTheme(titleTextStyle: TextStyle(fontFamily: 'GmarketSansMedium',fontSize: 20)),
+        fontFamily: 'NotoSansKR-Regular'
       ),
       initialRoute: '/login',
       routes: {

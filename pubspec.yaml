@@ -37,6 +37,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
 
 dev_dependencies:
   flutter_test:
@@ -87,5 +88,9 @@ flutter:
     - family: GmarketSansMedium
       fonts:
         - asset: assets/fonts/GmarketSansMedium.ttf
+
+    - family: GangwonEduBold
+      fonts:
+        - asset: assets/fonts/GangwonEduBold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
