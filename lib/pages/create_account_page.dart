@@ -11,6 +11,8 @@ class CreateAccountPage extends StatefulWidget {
 }
 
 class _CreateAccountPageState extends State<CreateAccountPage> {
+  final _authentication = FirebaseAuth.instance;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwController = TextEditingController();
@@ -19,12 +21,20 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   String email='';
   String password='';
 
+  final _formKey = GlobalKey<FormState>();
+  void _tryValidation(){
+    final isValid = _formKey.currentState!.validate();
+    if(isValid){
+      _formKey.currentState!.save();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('회원가입'),),
       body: Form(
-        key: GlobalKey<FormState>(),
+        key: _formKey,
         child: Padding(
           padding: const EdgeInsets.only(top: 20, left: 40, right: 40),
           child: SingleChildScrollView(
@@ -33,8 +43,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               children: [
                 TextFormField(
                   controller: nameController,
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return '이름을 입력해 주세요!';
+                    }
+                    return null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onSaved: (value){
+                    name = value!;
+                  },
                   decoration: const InputDecoration(
-                      labelText: '이름을 입력하세요',
+                      labelText: '이름을 입력해 주세요.',
                   ),
                 ),
                 const SizedBox(
@@ -42,8 +62,20 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
                 TextFormField(
                   controller: emailController,
+                  validator: (value){
+                    if(value!.isEmpty || value.length<4){
+                      return '최소 4글자 이상 입력해 주세요!';
+                    }else if(!value.contains('@')){
+                      return '유효한 이메일을 입력해 주세요!';
+                    }
+                    return null;
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onSaved: (value){
+                    email = value!;
+                  },
                   decoration: const InputDecoration(
-                      labelText: '아이디(이메일)를 입력하세요'
+                      labelText: '아이디(이메일)를 입력해 주세요.'
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -52,24 +84,41 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 ),
                 TextFormField(
                   controller: pwController,
+                  validator: (value){
+                    if(value!.isEmpty || value.length<6){
+                      return '6자 이상 입력해 주세요!';
+                    }
+                    return null;
+                  },
                   obscureText: true,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  onSaved: (value){
+                    password = value!;
+                  },
                   decoration: const InputDecoration(labelText: '비밀번호를 입력하세요'),
                 ),
                 const SizedBox(height: 40,),
                 Buttons(
                     text: const Text('가입하기'),
                     width: 200,
-                    onPressed: (){
-                      if(nameController.text.isEmpty){
-                        showSnackBar(context, '이름을 입력해 주세요!');
-                      }else if(emailController.text.isEmpty){
-                        showSnackBar(context, '아이디(이메일)을 입력해 주세요!');
-                      }else if(pwController.text.isEmpty){
-                        showSnackBar(context, '비밀번호를 입력해 주세요!');
-                      }else{
-//firebase authentication  기능 구현하기
+                    onPressed: () async {
+                      _tryValidation();
+                      if(name!='' && email!='' && password!=''){
+                        try{
+                          final newUser = await _authentication.createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
+                          if(newUser.user != null) {
+                            showSnackBar(context, '회원가입 성공!');
+                            Navigator.pop(context);
+                          }
+                        }catch(e){
+                          showSnackBar(context, e.toString());
+                        }
                       }
-                    })
+                    }),
+                const SizedBox(height: 30,),
               ],
             ),
           ),

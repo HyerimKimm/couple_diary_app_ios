@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 100,),
+            const SizedBox(height: 100,),
             //로그인 화면 이미지
             SizedBox(
                 width: 100,
@@ -60,6 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                           }),
                     ],
                   ),
+                  const SizedBox(height: 30,),
                 ],
               ),
             ),
