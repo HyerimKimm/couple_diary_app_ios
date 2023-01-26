@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../utils/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -28,7 +31,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image.asset('assets/images/wedding.png')
             ),
             const SizedBox(height: 40,),
-            const Text('변화 외에 불변하는 것은 없다',style: TextStyle(fontFamily: 'GangwonEduBold', fontSize: 25, color: Colors.black),),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('lessons').snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if(snapshot.hasData){
+                  int itemCount = snapshot.data!.docs.length;
+                  final contents = snapshot.data!.docs!;
+
+                  return Text(contents[Random().nextInt(itemCount)]['contents'],
+                        style: const TextStyle(fontSize: 23, fontFamily: 'GangwonEduBold'),);
+                }
+                return const CircularProgressIndicator();
+              }
+            ),
             const SizedBox(height: 40,),
             //아이디,비밀번호 입력 / 로그인, 회원가입 버튼
             Padding(
