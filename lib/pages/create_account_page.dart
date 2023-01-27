@@ -1,6 +1,8 @@
 import 'package:couple_diary_app/utils/snackBar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/buttons.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -42,7 +44,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextFormField(
-                  controller: nameController,
                   validator: (value){
                     if(value!.isEmpty){
                       return '이름을 입력해 주세요!';
@@ -61,7 +62,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: emailController,
                   validator: (value){
                     if(value!.isEmpty || value.length<4){
                       return '최소 4글자 이상 입력해 주세요!';
@@ -83,7 +83,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: pwController,
                   validator: (value){
                     if(value!.isEmpty || value.length<6){
                       return '6자 이상 입력해 주세요!';
@@ -110,6 +109,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             password: password,
                           );
                           if(newUser.user != null) {
+                            await FirebaseFirestore.instance.collection('user').doc(newUser.user!.uid)
+                              .set({'name':name, 'email':email});
                             showSnackBar(context, '회원가입 성공!');
                             Navigator.pop(context);
                           }

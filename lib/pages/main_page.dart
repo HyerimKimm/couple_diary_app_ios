@@ -5,6 +5,26 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Column(),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index){
+        },
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'home'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+            label: 'list'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+            label: 'settings'
+          ),
+        ],
+      ),
+    );
   }
 }
