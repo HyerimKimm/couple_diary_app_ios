@@ -51,7 +51,12 @@ class _LoginPageState extends State<LoginPage> {
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if(snapshot.hasData){
                   int randomIndex = Random().nextInt(snapshot.data!.docs.length);
-                  return Text('${snapshot.data!.docs[randomIndex]['contents']}',style: TextStyle(fontFamily: 'GangwonEduBold', fontSize: 23,),);
+                  return Text('${snapshot.data!.docs[randomIndex]['contents']}',
+                    style: TextStyle(
+                      fontFamily: 'GangwonEduBold',
+                      fontSize: 23,
+                      color: Color.fromRGBO(91, 91, 91, 1),
+                    ),);
                 }
                 return CircularProgressIndicator();
               }

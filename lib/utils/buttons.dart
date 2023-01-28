@@ -35,9 +35,9 @@ class Buttons extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: <Color>[
-                      Color(0xFF1E88E5),
-                      Color(0xFF2196F3),
-                      Color(0xFF64B5F6),
+                      Color.fromRGBO(123, 191, 239, 1),
+                      Color.fromRGBO(123, 191, 239, 1),
+                      Color.fromRGBO(186, 221, 246, 1),
                     ],
                   ),
                 ),
@@ -62,3 +62,41 @@ class Buttons extends StatelessWidget {
   }
 }
 
+class SettingsButton extends StatelessWidget {
+  final String text;
+  final double width;
+  final VoidCallback onPressed;
+
+  const SettingsButton({Key? key, required this.text, required this.width, required this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 1.0, color: Color.fromRGBO(215, 215, 215, 1)
+            )
+          )
+        ),
+        child: TextButton(
+            onPressed: onPressed,
+            style: TextButton.styleFrom(
+              alignment: Alignment.centerLeft,
+              minimumSize: Size(width, 60),
+            ),
+            child: Text(text,
+              style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'NotoSansKR-Regular',
+                  color: Color.fromRGBO(91, 91, 91, 1),
+              ),
+              textAlign: TextAlign.left,
+            ),
+        ),
+      ),
+    );
+  }
+}

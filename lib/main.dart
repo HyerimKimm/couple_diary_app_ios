@@ -1,6 +1,7 @@
 import 'package:couple_diary_app/pages/create_account_page.dart';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
+import 'package:couple_diary_app/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -22,7 +23,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        appBarTheme: AppBarTheme(titleTextStyle: TextStyle(fontFamily: 'GmarketSansMedium',fontSize: 20)),
+        primaryColor: const Color.fromRGBO(123, 191, 239, 1),
+        appBarTheme: const AppBarTheme(
+          color: Color.fromRGBO(123, 191, 239, 1),
+            titleTextStyle: TextStyle(fontFamily: 'GmarketSansMedium',fontSize: 20),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: const Color.fromRGBO(123, 191, 239, 1),
+        ),
+        focusColor: const Color.fromRGBO(123, 191, 239, 1),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color : Color.fromRGBO(150, 150, 150, 1),),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color.fromRGBO(215, 215, 215, 1),)
+          )
+        ),
         fontFamily: 'NotoSansKR-Regular'
       ),
       initialRoute: '/login',
@@ -30,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/login' : (context) => const LoginPage(),
         '/createAccount' : (context) => const CreateAccountPage(),
         '/main' : (context) => const MainPage(),
+        '/settings' : (context) => const Settings(),
       },
     );
   }
