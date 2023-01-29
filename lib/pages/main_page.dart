@@ -58,38 +58,53 @@ class _MainPageState extends State<MainPage> {
               }
               return Padding(
                 padding: const EdgeInsets.only(left:10),
-                child: Text('안녕하세요 🫠'),
+                child: Text(''),
               );
             },
         )
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          unselectedItemColor: Theme.of(context).primaryColorLight,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedFontSize: 10,
+          selectedFontSize: 10,
+          onTap: (index){
+            switch(index){
+              case 0:
 
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index){
-          switch(index){
-            case 0:
-              break;
-            case 1:
-              break;
-            case 2:
-              Navigator.pushNamed(context, '/settings');
-              break;
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'home'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-            label: 'list'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-            label: 'settings'
-          ),
-        ],
+                break;
+              case 1:
+                Navigator.pushReplacementNamed(context, '/list');
+                break;
+              case 2:
+                break;
+              case 3:
+                Navigator.pushNamed(context, '/settings');
+                break;
+            }
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'home'
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+              label: 'list'
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'chat'
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+              label: 'settings'
+            ),
+          ],
+        ),
       ),
     );
   }

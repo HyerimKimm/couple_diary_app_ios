@@ -7,7 +7,7 @@ void showSnackBar(BuildContext context, String text) {
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white)),
       duration: const Duration(seconds: 1),
-      backgroundColor: Colors.blue,
+      backgroundColor: Theme.of(context).primaryColor,
     ),
   );
 }

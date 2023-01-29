@@ -25,9 +25,17 @@ class _SettingsState extends State<Settings> {
             SettingsButton(
               text: '내 정보',
               width: 400,
-              onPressed: (){
-
-              },
+              onPressed: (){},
+            ),
+            SettingsButton(
+              text: '공지사항',
+              width: 400,
+              onPressed: (){},
+            ),
+            SettingsButton(
+              text: '문의하기',
+              width: 400,
+              onPressed: (){},
             ),
             SettingsButton(
               text: '로그아웃',

@@ -55,10 +55,10 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                       fontFamily: 'GangwonEduBold',
                       fontSize: 23,
-                      color: Color.fromRGBO(91, 91, 91, 1),
+                      color: Theme.of(context).primaryColorDark,
                     ),);
                 }
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
             ),
             const SizedBox(height: 40,),
