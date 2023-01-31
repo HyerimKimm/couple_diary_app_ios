@@ -36,6 +36,7 @@ class _LoadingPageState extends State<LoadingPage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

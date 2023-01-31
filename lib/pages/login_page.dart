@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import '../utils/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -48,21 +50,53 @@ class _LoginPageState extends State<LoginPage> {
                 child: Image.asset('assets/images/wedding.png')
             ),
             const SizedBox(height: 40,),
-            StreamBuilder(
-              stream: FirebaseFirestore.instance.collection('lessons').snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                if(snapshot.hasData){
-                  int randomIndex = Random().nextInt(snapshot.data!.docs.length);
-                  return Text('${snapshot.data!.docs[randomIndex]['contents']}',
-                    style: TextStyle(
-                      fontFamily: 'GangwonEduBold',
-                      fontSize: 23,
-                      color: Theme.of(context).primaryColorDark,
-                    ),);
+            SizedBox(
+              height: 25,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance.collection('lessons').snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                    if(snapshot.hasData){
+                      return AnimatedTextKit(
+                        animatedTexts: [
+                          FadeAnimatedText('${snapshot.data!.docs[0]['contents']}',
+                            duration: Duration(seconds: 5),
+                            fadeInEnd: 0.05,
+                            fadeOutBegin: 0.9,
+                            textStyle: TextStyle(
+                              fontFamily: 'GangwonEduBold',
+                              fontSize: 23,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                          FadeAnimatedText('${snapshot.data!.docs[1]['contents']}',
+                            duration: Duration(seconds:5),
+                            fadeInEnd: 0.05,
+                            fadeOutBegin: 0.9,
+                            textStyle: TextStyle(
+                              fontFamily: 'GangwonEduBold',
+                              fontSize: 23,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                          FadeAnimatedText('${snapshot.data!.docs[2]['contents']}',
+                            duration: Duration(seconds:5),
+                            fadeInEnd: 0.05,
+                            fadeOutBegin: 0.9,
+                            textStyle: TextStyle(
+                            fontFamily: 'GangwonEduBold',
+                            fontSize: 23,
+                            color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                        ],
+                        pause: Duration(seconds: 3),
+                        repeatForever: true,
+                      );
+                    }
+                    return const CircularProgressIndicator();
                 }
-                return const CircularProgressIndicator();
-              }
+              ),
             ),
             const SizedBox(height: 40,),
             //아이디,비밀번호 입력 / 로그인, 회원가입 버튼
