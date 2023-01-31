@@ -30,8 +30,11 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('로그인', style: TextStyle(color: Colors.white),),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0),
+        child: AppBar(
+          title: const Text('로그인', style: TextStyle(color: Color.fromRGBO(123, 191, 239, 1)),),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

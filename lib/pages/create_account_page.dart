@@ -34,7 +34,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('회원가입'),),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0),
+        child: AppBar(title: const Text('회원가입'),),
+      ),
       body: Form(
         key: _formKey,
         child: Padding(

@@ -4,7 +4,7 @@ import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/loading_page.dart';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
-import 'package:couple_diary_app/pages/settings.dart';
+import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -26,12 +26,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         primaryColor: const Color.fromRGBO(123, 191, 239, 1),
         primaryColorDark: const Color.fromRGBO(91, 91, 91, 1),
         primaryColorLight: const Color.fromRGBO(215, 215, 215, 1),
         appBarTheme: const AppBarTheme(
-          color: Color.fromRGBO(123, 191, 239, 1),
-            titleTextStyle: TextStyle(fontFamily: 'GmarketSansMedium',fontSize: 20),
+          color: Color.fromRGBO(255, 255, 255, 1),
+          titleTextStyle: TextStyle(fontFamily: 'GmarketSansMedium',fontSize: 20, color: Color.fromRGBO(123, 191, 239, 1)),
+          elevation: 0.5,
+          shadowColor: Color.fromRGBO(215, 215, 215, 1),
+          iconTheme: IconThemeData(color: Color.fromRGBO(123, 191, 239, 1))
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: const Color.fromRGBO(123, 191, 239, 1),
@@ -52,8 +56,8 @@ class MyApp extends StatelessWidget {
         '/createAccount' : (context) => const CreateAccountPage(),
         '/main' : (context) => const MainPage(),
         '/list' : (context) => const ListPage(),
-        '/chatting' : (context) =>const ChattingPage();
-        '/settings' : (context) => const Settings(),
+        '/chatting' : (context) =>const ChattingPage(),
+        '/settings' : (context) => const SettingsPage(),
       },
     );
   }

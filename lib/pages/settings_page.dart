@@ -1,72 +1,59 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:couple_diary_app/pages/chatting_page.dart';
-import 'package:couple_diary_app/pages/list_page.dart';
-import 'package:couple_diary_app/pages/settings_page.dart';
+import 'package:couple_diary_app/pages/login_page.dart';
+import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:transition/transition.dart';
+import '../utils/buttons.dart';
+import 'chatting_page.dart';
+import 'list_page.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _SettingsPageState extends State<SettingsPage> {
   final _authentication = FirebaseAuth.instance;
-  User? loggedUser;
-  String loggedUserEmail='';
-  String loggedUserUid='';
 
   @override
-  void initState(){
-    super.initState();
-    getCurrentUser();
-  }
-  void getCurrentUser(){
-    final user = _authentication.currentUser;
-    if(user != null){ //로그인 정보가 있으면
-      try{
-        loggedUser = user;
-        loggedUserEmail = loggedUser!.email.toString();
-        loggedUserUid = loggedUser!.uid.toString();
-        print(loggedUserEmail);
-      }catch(e){
-        showSnackBar(context, e.toString());
-      }
-    }
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
-          backgroundColor: Color.fromRGBO(255, 255, 255, 0),
-          titleTextStyle: TextStyle(
-              color: Color.fromRGBO(91, 91, 91, 1),
-              fontFamily: 'NotoSansKR-Bold',
-              fontSize: 23),
-          elevation: 0,
-          centerTitle: false,
-          title: FutureBuilder(
-              future: FirebaseFirestore.instance.collection('user')
-                  .doc(loggedUserUid).get(),
-              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                if(snapshot.hasData){
-                  Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-                  return Padding(
-                    padding: const EdgeInsets.only(left:10),
-                    child: Text('안녕하세요, ${data['name']}님 🫠',),
-                  );
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(left:10),
-                  child: Text(''),
-                );
+          title: Text('설정', style: TextStyle(color: Theme.of(context).primaryColor),),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          children:[
+            SettingsButton(
+              text: '내 정보',
+              width: 400,
+              onPressed: (){},
+            ),
+            SettingsButton(
+              text: '공지사항',
+              width: 400,
+              onPressed: (){},
+            ),
+            SettingsButton(
+              text: '문의하기',
+              width: 400,
+              onPressed: (){},
+            ),
+            SettingsButton(
+              text: '로그아웃',
+              width: 400,
+              onPressed: (){
+                signOut();
               },
-          )
+            ),
+          ]
         ),
       ),
       bottomNavigationBar: Padding(
@@ -77,6 +64,7 @@ class _MainPageState extends State<MainPage> {
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedFontSize: 10,
           selectedFontSize: 10,
+          currentIndex: 3,
           onTap: (index){
             switch(index){
               case 0:
@@ -119,24 +107,41 @@ class _MainPageState extends State<MainPage> {
           },
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'home'
+              icon: Icon(Icons.home),
+              label: 'home'
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: 'list'
+              icon: Icon(Icons.list),
+              label: 'list'
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'chat'
+              icon: Icon(Icons.chat),
+              label: 'chat'
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'settings'
+              icon: Icon(Icons.settings),
+              label: 'settings'
             ),
           ],
         ),
       ),
     );
+  }
+
+  void signOut() async{
+    try{
+      await _authentication.signOut();
+      if(_authentication.currentUser==null){
+        showSnackBar(context, '로그아웃 되었습니다.');
+        Navigator.pushReplacement(context,
+            Transition(
+              child: LoginPage(),
+              transitionEffect: TransitionEffect.FADE
+            )
+        );
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
   }
 }
