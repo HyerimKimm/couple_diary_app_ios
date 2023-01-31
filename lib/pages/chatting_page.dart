@@ -1,6 +1,5 @@
-import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:couple_diary_app/pages/settings_page.dart';
 import 'list_page.dart';
 import 'main_page.dart';
 

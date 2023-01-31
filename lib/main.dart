@@ -4,6 +4,7 @@ import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/loading_page.dart';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
+import 'package:couple_diary_app/pages/myprofile_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/list' : (context) => const ListPage(),
         '/chatting' : (context) =>const ChattingPage(),
         '/settings' : (context) => const SettingsPage(),
+        '/myProfile' : (context) => const MyProfilePage(),
       },
     );
   }

@@ -34,7 +34,9 @@ class _SettingsPageState extends State<SettingsPage> {
             SettingsButton(
               text: '내 정보',
               width: 400,
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pushNamed(context, '/myProfile');
+              },
             ),
             SettingsButton(
               text: '공지사항',
