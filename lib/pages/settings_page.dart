@@ -27,35 +27,37 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text('설정', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Column(
-          children:[
-            SettingsButton(
-              text: '내 정보',
-              width: 400,
-              onPressed: (){
-                Navigator.pushNamed(context, '/myProfile');
-              },
-            ),
-            SettingsButton(
-              text: '공지사항',
-              width: 400,
-              onPressed: (){},
-            ),
-            SettingsButton(
-              text: '문의하기',
-              width: 400,
-              onPressed: (){},
-            ),
-            SettingsButton(
-              text: '로그아웃',
-              width: 400,
-              onPressed: (){
-                signOut();
-              },
-            ),
-          ]
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            children:[
+              SettingsButton(
+                text: '내 정보',
+                width: MediaQuery.of(context).size.width,
+                onPressed: (){
+                  Navigator.pushNamed(context, '/myProfile');
+                },
+              ),
+              SettingsButton(
+                text: '공지사항',
+                width: MediaQuery.of(context).size.width,
+                onPressed: (){},
+              ),
+              SettingsButton(
+                text: '문의하기',
+                width: MediaQuery.of(context).size.width,
+                onPressed: (){},
+              ),
+              SettingsButton(
+                text: '로그아웃',
+                width: MediaQuery.of(context).size.width,
+                onPressed: (){
+                  signOut();
+                },
+              ),
+            ]
+          ),
         ),
       ),
       bottomNavigationBar: Padding(

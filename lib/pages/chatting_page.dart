@@ -1,3 +1,5 @@
+import 'package:couple_diary_app/chatting/chat/message.dart';
+import 'package:couple_diary_app/chatting/chat/new_message.dart';
 import 'package:flutter/material.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'list_page.dart';
@@ -19,6 +21,12 @@ class _ChattingPageState extends State<ChattingPage> {
         child: AppBar(
           title: Text('채팅', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
+      ),
+      body: Column(
+        children: [
+          Expanded(child: Messages()),
+          NewMessage(),
+        ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
