@@ -1,5 +1,6 @@
 import 'package:couple_diary_app/chatting/chat/message.dart';
 import 'package:couple_diary_app/chatting/chat/new_message.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'list_page.dart';
@@ -13,6 +14,21 @@ class ChattingPage extends StatefulWidget {
 }
 
 class _ChattingPageState extends State<ChattingPage> {
+  final _authentication = FirebaseAuth.instance;
+
+  @override
+  void initState(){
+    super.initState();
+    getCurrentUser();
+  }
+  void getCurrentUser(){
+    final user = _authentication.currentUser;
+
+    if(user==null){
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,11 +38,14 @@ class _ChattingPageState extends State<ChattingPage> {
           title: Text('채팅', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(child: Messages()),
-          NewMessage(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(child: Messages()),
+            NewMessage(),
+          ],
+        ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),

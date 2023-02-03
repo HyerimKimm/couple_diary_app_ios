@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_4.dart';
 
-class ChatBubble extends StatelessWidget {
-  const ChatBubble({Key? key, required this.message, required this.isMe}) : super(key: key);
+class ChatBubbles extends StatelessWidget {
+  const ChatBubbles({Key? key, required this.message, required this.isMe}) : super(key: key);
 
   final String message;
   final bool isMe;
@@ -9,18 +12,39 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: isMe==true?MainAxisAlignment.end:MainAxisAlignment.start,
+      mainAxisAlignment: isMe?MainAxisAlignment.end:MainAxisAlignment.start,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: isMe==true?Color.fromRGBO(123, 191, 239, 0.3):Color.fromRGBO(215, 215, 215, 0.5),
-            borderRadius: BorderRadius.circular(15),
+        if(isMe)
+        ChatBubble(
+          clipper: ChatBubbleClipper4(type: BubbleType.sendBubble),
+          alignment: Alignment.topRight,
+          margin: EdgeInsets.only(top: 20),
+          backGroundColor: Color.fromRGBO(123, 191, 239, 1),
+          child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              child: Text(
+                      message,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                ),
           ),
-          width: 200,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal:8, vertical: 5),
-          child: Text(message),
-        ),
+          if(!isMe) ChatBubble(
+            clipper: ChatBubbleClipper4(type: BubbleType.receiverBubble),
+            alignment: Alignment.topRight,
+            margin: EdgeInsets.only(top: 20),
+            backGroundColor: Color.fromRGBO(225, 225, 225, 1),
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              child: Text(
+                message,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
       ],
     );
   }
