@@ -33,7 +33,7 @@ class _NewMessageState extends State<NewMessage> {
         children: [
           Expanded(
               child: TextField(
-                maxLines:1,
+                maxLines:null,
                 controller: _controller,
                 decoration: InputDecoration(
                   labelText: '메세지를 입력하세요',

@@ -9,25 +9,32 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('chat')
-            .orderBy('time',descending: true).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if(snapshot.connectionState==ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator());
-          }
-          final chatDocs = snapshot.data!.docs;
-          return ListView.builder(
-              reverse: true,
-              itemCount: chatDocs.length,
-              itemBuilder: (context, index){
-                return ChatBubbles(
-                    message: chatDocs[index]['text'],
-                    isMe: chatDocs[index]['userId']==user!.uid?true:false,
-                );
-              }
-          );
-       },
+    return GestureDetector(
+      onTap: (){
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('chat')
+              .orderBy('time',descending: true).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if(snapshot.connectionState==ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }
+            final chatDocs = snapshot.data!.docs;
+
+            return ListView.builder(
+                reverse: true,
+                itemCount: chatDocs.length,
+                itemBuilder: (context, index) {
+                  return ChatBubbles(
+                      message: chatDocs[index]['text'],
+                      isMe: chatDocs[index]['userId']==user!.uid?true:false,
+                      userId: chatDocs[index]['userId'].toString(),
+                  );
+                }
+            );
+         },
+      ),
     );
   }
 }
