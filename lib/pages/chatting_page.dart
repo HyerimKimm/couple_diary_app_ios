@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/chatting/chat/message.dart';
 import 'package:couple_diary_app/chatting/chat/new_message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,7 +24,6 @@ class _ChattingPageState extends State<ChattingPage> {
   }
   void getCurrentUser(){
     final user = _authentication.currentUser;
-
     if(user==null){
       Navigator.pushReplacementNamed(context, '/login');
     }
@@ -38,14 +38,11 @@ class _ChattingPageState extends State<ChattingPage> {
           title: Text('채팅', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(child: Messages()),
-            NewMessage(),
-          ],
-        ),
+      body: Column(
+        children: [
+          Expanded(child: Messages()),
+          NewMessage(),
+        ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),

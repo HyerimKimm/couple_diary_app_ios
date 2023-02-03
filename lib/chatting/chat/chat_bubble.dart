@@ -9,40 +9,53 @@ class ChatBubbles extends StatelessWidget {
   final String message;
   final bool isMe;
 
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: isMe?MainAxisAlignment.end:MainAxisAlignment.start,
       children: [
         if(isMe)
-        ChatBubble(
-          clipper: ChatBubbleClipper4(type: BubbleType.sendBubble),
-          alignment: Alignment.topRight,
-          margin: EdgeInsets.only(top: 20),
-          backGroundColor: Color.fromRGBO(123, 191, 239, 1),
-          child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: Text(
-                      message,
-                      style: TextStyle(color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 10, 5, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text('user', style: TextStyle(fontWeight: FontWeight.bold),),
+              ChatBubble(
+                clipper: ChatBubbleClipper4(type: BubbleType.sendBubble),
+                alignment: Alignment.topRight,
+                margin: EdgeInsets.only(top: 0),
+                backGroundColor: Color.fromRGBO(123, 191, 239, 1),
+                child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
                     ),
+                    child: Text(message, style: TextStyle(color: Colors.white),),
                 ),
+              ),
+            ],
           ),
-          if(!isMe) ChatBubble(
-            clipper: ChatBubbleClipper4(type: BubbleType.receiverBubble),
-            alignment: Alignment.topRight,
-            margin: EdgeInsets.only(top: 20),
-            backGroundColor: Color.fromRGBO(225, 225, 225, 1),
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: Text(
-                message,
-                style: TextStyle(color: Colors.black),
-              ),
+        ),
+          if(!isMe) Padding(
+            padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('receiver', style: TextStyle(fontWeight: FontWeight.bold),),
+                ChatBubble(
+                  clipper: ChatBubbleClipper4(type: BubbleType.receiverBubble),
+                  alignment: Alignment.topRight,
+                  margin: EdgeInsets.only(top: 0),
+                  backGroundColor: Color.fromRGBO(225, 225, 225, 1),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
+                    ),
+                    child: Text(message, style: TextStyle(color: Colors.black),),
+                  ),
+                ),
+              ],
             ),
           ),
       ],
