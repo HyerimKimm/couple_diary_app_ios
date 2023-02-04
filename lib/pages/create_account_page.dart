@@ -22,6 +22,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   String name='';
   String email='';
   String password='';
+  String coupleId='';
 
   final _formKey = GlobalKey<FormState>();
   void _tryValidation(){
@@ -113,7 +114,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           );
                           if(newUser.user != null) {
                             await FirebaseFirestore.instance.collection('user').doc(newUser.user!.uid)
-                              .set({'name':name, 'email':email});
+                              .set({'name':name, 'email':email, 'coupleUid':coupleId});
                             showSnackBar(context, '회원가입 성공!');
                             Navigator.pop(context);
                           }

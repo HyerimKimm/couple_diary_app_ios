@@ -2,6 +2,7 @@ import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import 'chatting_page.dart';
+import 'chattingroom_page.dart';
 import 'main_page.dart';
 
 class ListPage extends StatefulWidget {
@@ -53,7 +54,7 @@ class _ListPageState extends State<ListPage> {
               case 2:
                 Navigator.pushReplacement(context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => ChattingPage(),
+                    pageBuilder: (context, animation1, animation2) => ChattingRoomPage(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),

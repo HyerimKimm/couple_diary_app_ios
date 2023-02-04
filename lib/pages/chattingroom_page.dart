@@ -1,64 +1,23 @@
-import 'package:couple_diary_app/pages/login_page.dart';
-import 'package:couple_diary_app/pages/main_page.dart';
-import 'package:couple_diary_app/utils/snackBar.dart';
+import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:transition/transition.dart';
-import '../utils/buttons.dart';
-import 'chatting_page.dart';
-import 'chattingroom_page.dart';
 import 'list_page.dart';
+import 'main_page.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class ChattingRoomPage extends StatefulWidget {
+  const ChattingRoomPage({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<ChattingRoomPage> createState() => _ChattingRoomPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  final _authentication = FirebaseAuth.instance;
-
+class _ChattingRoomPageState extends State<ChattingRoomPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
-          title: Text('설정', style: TextStyle(color: Theme.of(context).primaryColor),),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            children:[
-              SettingsButton(
-                text: '내 정보',
-                width: MediaQuery.of(context).size.width,
-                onPressed: (){
-                  Navigator.pushNamed(context, '/myProfile');
-                },
-              ),
-              SettingsButton(
-                text: '공지사항',
-                width: MediaQuery.of(context).size.width,
-                onPressed: (){},
-              ),
-              SettingsButton(
-                text: '문의하기',
-                width: MediaQuery.of(context).size.width,
-                onPressed: (){},
-              ),
-              SettingsButton(
-                text: '로그아웃',
-                width: MediaQuery.of(context).size.width,
-                onPressed: (){
-                  signOut();
-                },
-              ),
-            ]
-          ),
+          title: Text('채팅', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
       ),
       bottomNavigationBar: Padding(
@@ -69,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedFontSize: 10,
           selectedFontSize: 10,
-          currentIndex: 3,
+          currentIndex: 2,
           onTap: (index){
             switch(index){
               case 0:
@@ -112,41 +71,24 @@ class _SettingsPageState extends State<SettingsPage> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'home'
+                icon: Icon(Icons.home),
+                label: 'home'
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'list'
+                icon: Icon(Icons.list),
+                label: 'list'
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'chat'
+                icon: Icon(Icons.chat),
+                label: 'chat'
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'settings'
+                icon: Icon(Icons.settings),
+                label: 'settings'
             ),
           ],
         ),
       ),
     );
-  }
-
-  void signOut() async{
-    try{
-      await _authentication.signOut();
-      if(_authentication.currentUser==null){
-        showSnackBar(context, '로그아웃 되었습니다.');
-        Navigator.pushReplacement(context,
-            Transition(
-              child: LoginPage(),
-              transitionEffect: TransitionEffect.FADE
-            )
-        );
-      }
-    }catch(e){
-      showSnackBar(context, e.toString());
-    }
   }
 }

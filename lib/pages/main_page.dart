@@ -6,6 +6,8 @@ import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'chattingroom_page.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -16,8 +18,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final _authentication = FirebaseAuth.instance;
   User? loggedUser;
-  String loggedUserEmail='';
   String loggedUserUid='';
+  String loggedUserName='';
+  String loggedUserCoupleId='';
+  String loggedUserCoupleState='';
 
   @override
   void initState(){
@@ -29,9 +33,7 @@ class _MainPageState extends State<MainPage> {
     if(user != null){ //로그인 정보가 있으면
       try{
         loggedUser = user;
-        loggedUserEmail = loggedUser!.email.toString();
         loggedUserUid = loggedUser!.uid.toString();
-        print(loggedUserEmail);
       }catch(e){
         showSnackBar(context, e.toString());
       }
@@ -50,15 +52,14 @@ class _MainPageState extends State<MainPage> {
               fontSize: 23),
           elevation: 0,
           centerTitle: false,
-          title: FutureBuilder(
-              future: FirebaseFirestore.instance.collection('user')
-                  .doc(loggedUserUid).get(),
+          title: StreamBuilder(
+              stream: FirebaseFirestore.instance.collection('user').doc(loggedUserUid).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
                 if(snapshot.hasData){
-                  Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+                  loggedUserName = snapshot.data!['name'];
                   return Padding(
                     padding: const EdgeInsets.only(left:10),
-                    child: Text('안녕하세요, ${data['name']}님 🫠',),
+                    child: Text('안녕하세요, ${loggedUserName}님 🫠',),
                   );
                 }
                 return Padding(
@@ -69,6 +70,7 @@ class _MainPageState extends State<MainPage> {
           )
         ),
       ),
+      body: MakeCouple(),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: BottomNavigationBar(
@@ -100,7 +102,7 @@ class _MainPageState extends State<MainPage> {
               case 2:
                 Navigator.pushReplacement(context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => ChattingPage(),
+                    pageBuilder: (context, animation1, animation2) => ChattingRoomPage(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),
@@ -140,3 +142,58 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
+class MakeCouple extends StatelessWidget {
+  const MakeCouple({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: FirebaseFirestore.instance.collection('couple')
+          .where("senderUid",isEqualTo: "loggedUserUid").get(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if(snapshot.hasData){
+
+        }
+        return SearchMyCouple();
+      },
+    );
+  }
+}
+
+class SearchMyCouple extends StatelessWidget {
+  const SearchMyCouple({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('커플을 등록해 보세요!', style: TextStyle(fontFamily: 'GangwonEduBold', fontSize: 23),),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: OutlinedButton.icon(
+              onPressed: (){
+                Navigator.pushNamed(context, '/searchCouple');
+              },
+              icon: Icon(Icons.search),
+              label: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('내 커플 찾기',style: TextStyle(fontFamily: 'GangwonEduBold',fontSize: 21),),
+              ),
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      )
+                  )
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+

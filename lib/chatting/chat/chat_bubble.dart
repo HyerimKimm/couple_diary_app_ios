@@ -32,9 +32,12 @@ class _ChatBubblesState extends State<ChatBubbles> {
                 child: FutureBuilder(
                   future: FirebaseFirestore.instance.collection('user').doc(widget.userId).get(),
                   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    final userName = snapshot.data['name'];
-                    if(!snapshot.hasData) return Text('');
-                    return Text(userName);
+                    if(snapshot.hasData){
+                      final userName = snapshot.data['name'];
+                      return Text(userName);
+                    }else{
+                      return Text('');
+                    }
                   },
                 ),
               ),
@@ -63,8 +66,12 @@ class _ChatBubblesState extends State<ChatBubbles> {
                   child: FutureBuilder(
                     future: FirebaseFirestore.instance.collection('user').doc(widget.userId).get(),
                     builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                      final userName = snapshot.data['name'];
-                      return Text(userName);
+                      if(snapshot.hasData){
+                        final userName = snapshot.data['name'];
+                        return Text(userName);
+                      }else{
+                        return Text('');
+                      }
                     },
                   ),
                 ),
