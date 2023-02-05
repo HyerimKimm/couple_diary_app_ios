@@ -12,6 +12,7 @@ class SearchCouplePage extends StatefulWidget {
 
 class _SearchCouplePageState extends State<SearchCouplePage> {
   final user = FirebaseAuth.instance.currentUser;
+  CollectionReference searchedUser = FirebaseFirestore.instance.collection('user');
   final _formKey = GlobalKey<FormState>();
 
   String searchInputData = '';
@@ -69,6 +70,9 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                   IconButton(
                       onPressed: (){
                         _tryValidation();
+                        setState(() {
+
+                        });
                       },
                       icon: Icon(
                         Icons.search,
@@ -80,6 +84,51 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
               ),
             ),
             //결과 리스트
+            StreamBuilder(
+              stream: searchedUser.where("email",isEqualTo: searchInputData).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if(snapshot.hasData){
+                  return SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index){
+                        final DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
+                        return Card(
+                          child: ListTile(
+                            title: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width:MediaQuery.of(context).size.width*0.6,
+                                      child: Text(documentSnapshot['name'])
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width*0.2,
+                                      child: TextButton(
+                                          onPressed: (){
+
+                                          },
+                                          child: Text('커플 신청'),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    ),
+                  );
+                }
+                return Container(
+                  height: 1,
+                );
+              },
+            ),
           ],
         ),
       ),
