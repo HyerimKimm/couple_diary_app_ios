@@ -88,44 +88,53 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
               stream: searchedUser.where("email",isEqualTo: searchInputData).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if(snapshot.hasData){
-                  return SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index){
-                        final DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
-                        return Card(
-                          child: ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Center(
-                                child: Row(
+                  return Expanded(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width*0.8,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index){
+                            final DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              child: ListTile(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     SizedBox(
-                                      width:MediaQuery.of(context).size.width*0.6,
-                                      child: Text(documentSnapshot['name'])
+                                      width:65,
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                                      ),
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width*0.2,
-                                      child: TextButton(
+                                      child: Text(documentSnapshot['name'],textAlign: TextAlign.start,)
+                                    ),
+                                    SizedBox(
+                                      child: IconButton(
                                           onPressed: (){
 
-                                          },
-                                          child: Text('커플 신청'),
-                                      ),
-                                    )
-                                  ],
+                                            }, icon: Icon(Icons.add),
+
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }
+                              );
+                          }
+                        ),
+                      ),
                     ),
                   );
                 }
-                return Container(
-                  height: 1,
+                return Expanded(
+                  child: Container(),
                 );
               },
             ),
