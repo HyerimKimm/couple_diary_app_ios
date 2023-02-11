@@ -117,7 +117,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               .set({
                               'name':name,
                               'email':email,
-                              'coupleUid':coupleId,
                               'profileUrl':'',
                               });
                             showSnackBar(context, '회원가입 성공!');

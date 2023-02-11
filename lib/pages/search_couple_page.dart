@@ -18,11 +18,22 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
   String searchInputData = '';
   String searchedCoupleUserUid = '';
 
+  //검색창 입력값 유효성 검사
   void _tryValidation(){
     bool isValid = _formKey.currentState!.validate();
     if(isValid){
       _formKey.currentState!.save();
     }
+  }
+
+  void _addCouple(senderUid,receiverUid){
+    FocusScope.of(context).unfocus();
+    FirebaseFirestore.instance.collection('chat').add({
+      'senderUid':senderUid,
+      'receiverUid':receiverUid,
+      'state':'wait',
+      'time':Timestamp.now(),
+    });
   }
 
   @override
@@ -123,8 +134,18 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                     SizedBox(
                                       child: IconButton(
                                           onPressed: (){
+                                            String senderUid='';
+                                            String receiverUid='';
 
-                                            },
+                                            senderUid = user!.uid;
+
+                                            showSnackBar(context, senderUid);
+                                            showSnackBar(context, receiverUid);
+
+                                            /*if(senderUid!='' && receiverUid!='') {
+                                              _addCouple(senderUid, receiverUid);
+                                            }*/
+                                          },
                                         icon: Icon(Icons.add),
                                         ),
                                       )
@@ -138,7 +159,7 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                     ),
                   );
                 }
-                return Expanded(
+                return Expanded( //결과가 없으면
                   child: Container(),
                 );
               },
