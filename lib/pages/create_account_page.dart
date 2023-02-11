@@ -114,7 +114,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           );
                           if(newUser.user != null) {
                             await FirebaseFirestore.instance.collection('user').doc(newUser.user!.uid)
-                              .set({'name':name, 'email':email, 'coupleUid':coupleId});
+                              .set({
+                              'name':name,
+                              'email':email,
+                              'coupleUid':coupleId,
+                              'profileUrl':'',
+                              });
                             showSnackBar(context, '회원가입 성공!');
                             Navigator.pop(context);
                           }

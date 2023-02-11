@@ -107,9 +107,14 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                   children: [
                                     SizedBox(
                                       width:65,
-                                      child: CircleAvatar(
-                                        radius: 40,
-                                        backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                                      child: Stack(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                                            backgroundImage: NetworkImage(documentSnapshot['profileUrl']),
+                                          ),
+                                        ]
                                       ),
                                     ),
                                     SizedBox(
@@ -119,8 +124,8 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                       child: IconButton(
                                           onPressed: (){
 
-                                            }, icon: Icon(Icons.add),
-
+                                            },
+                                        icon: Icon(Icons.add),
                                         ),
                                       )
                                     ],
