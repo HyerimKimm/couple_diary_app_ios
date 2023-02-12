@@ -26,14 +26,21 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
     }
   }
 
-  void _addCouple(senderUid,receiverUid){
+  void _addCouple(senderUid,receiverUid) async{
     FocusScope.of(context).unfocus();
-    FirebaseFirestore.instance.collection('chat').add({
+    await FirebaseFirestore.instance.collection('couple').add({
       'senderUid':senderUid,
       'receiverUid':receiverUid,
       'state':'wait',
       'time':Timestamp.now(),
     });
+    final coupleInfo = await FirebaseFirestore.instance.collection('couple')
+        .where('receiverUid',isEqualTo: receiverUid)
+        .where('senderUid',isEqualTo: senderUid).get();
+
+    if(coupleInfo!=null){
+      showSnackBar(context, '등록되었습니다!');
+    }
   }
 
   @override
@@ -136,15 +143,13 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                           onPressed: (){
                                             String senderUid='';
                                             String receiverUid='';
-
+//streambuilder : email로 검색한 유저의 값
                                             senderUid = user!.uid;
+                                            receiverUid = documentSnapshot.id.toString();
 
-                                            showSnackBar(context, senderUid);
-                                            showSnackBar(context, receiverUid);
-
-                                            /*if(senderUid!='' && receiverUid!='') {
+                                            if(senderUid!='' && receiverUid!='') {
                                               _addCouple(senderUid, receiverUid);
-                                            }*/
+                                            }
                                           },
                                         icon: Icon(Icons.add),
                                         ),
