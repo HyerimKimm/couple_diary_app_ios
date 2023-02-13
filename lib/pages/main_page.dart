@@ -20,13 +20,13 @@ class _MainPageState extends State<MainPage> {
   User? loggedUser;
   String loggedUserUid='';
   String loggedUserName='';
-  String coupleState=''; //sender, receiver, couple, none
+  String coupleState='none'; //sender, receiver, couple, none
+  bool initFinish=false;
 
   @override
   void initState(){
     super.initState();
     getCurrentUser();
-    getCoupleInfo();
   }
 
   //로그인한 유저의 회원정보를 조회
@@ -42,47 +42,9 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  //로그인한 유저의 커플 등록 정보를 조회한 뒤 위젯을 반환
-  void getCoupleInfo() async{
-    dynamic sendCouple = await FirebaseFirestore.instance.collection('couple')
-        .where('senderUid',isEqualTo: loggedUserUid)
-        .where('state',isEqualTo: 'wait');
-    if(sendCouple!=null){
-      coupleState = 'sender';
-      print(coupleState);
-      return;
-    }
-    final receiveCouple = await FirebaseFirestore.instance.collection('couple')
-        .where('receiverUid',isEqualTo: loggedUserUid)
-        .where('state',isEqualTo: 'wait');
-    if(receiveCouple!=null){
-      coupleState = 'receiver';
-      print(coupleState);
-      return;
-    }
-    var couple = await FirebaseFirestore.instance.collection('couple')
-      .where('senderUid',isEqualTo: loggedUserUid)
-      .where('state',isEqualTo: 'couple');
-    if(couple!=null){
-      coupleState = 'couple';
-      print(coupleState);
-      return;
-    }
-    couple = await FirebaseFirestore.instance.collection('couple')
-      .where('receiverUid',isEqualTo: loggedUserUid)
-      .where('state',isEqualTo: 'couple');
-    if(couple!=null){
-      coupleState = 'couple';
-      print(coupleState);
-      return;
-    }
-    coupleState='none';
-    print(coupleState);
-    return;
-  }
-
+  //coupleState의 값에 따라 body 위젯을 리턴함
   Widget getWidget(){
-    print(coupleState);
+    print('getWidget : ${coupleState}');
     if(coupleState=='sender') return CoupleSenderUser();
     if(coupleState=='receiver') return CoupleReceiverUser();
     if(coupleState=='couple') return CoupleUser();
@@ -119,7 +81,7 @@ class _MainPageState extends State<MainPage> {
           )
         ),
       ),
-      body: getWidget(),
+      body: SearchMyCouple(),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: BottomNavigationBar(
@@ -239,7 +201,11 @@ class CoupleUser extends StatefulWidget {
 class _CoupleUserState extends State<CoupleUser> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Text('커플입니다.');
+      },
+    );
   }
 }
 
@@ -253,7 +219,11 @@ class CoupleReceiverUser extends StatefulWidget {
 class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Text('커플 신청이 있습니다.');
+      },
+    );
   }
 }
 
@@ -267,7 +237,11 @@ class CoupleSenderUser extends StatefulWidget {
 class _CoupleSenderUserState extends State<CoupleSenderUser> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return StreamBuilder(
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return Text('커플 수락 대기중입니다.');
+      },
+    );
   }
 }
 
