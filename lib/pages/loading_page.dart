@@ -25,7 +25,7 @@ class _LoadingPageState extends State<LoadingPage> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasData) {
                 return const MainPage();
-              } else {
+              }else {
                 return const LoginPage();
               }
             },
