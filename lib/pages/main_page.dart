@@ -1,12 +1,7 @@
-import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:couple_diary_app/couple/coupleInfo.dart';
-import 'package:couple_diary_app/pages/chatting_page.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
-import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../userInfo/user_info.dart';
 import 'chattingroom_page.dart';
 import 'package:provider/provider.dart';
 
@@ -19,142 +14,86 @@ class MainPage extends StatefulWidget{
 }
 
 class _MainPageState extends State<MainPage> {
-  final _authentication = FirebaseAuth.instance;
-  User? loggedUser;
-  String loggedUserUid='';
-  String loggedUserName='';
-  String coupleState='none'; //sender, receiver, couple, none
-  bool initFinish=false;
-
-  @override
-  void initState(){
-    super.initState();
-    getCurrentUser();
-  }
-
-  //로그인한 유저의 회원정보를 조회
-  void getCurrentUser(){
-    final user = _authentication.currentUser;
-    if(user != null){ //로그인 정보가 있으면
-      try{
-        loggedUser = user;
-        loggedUserUid = loggedUser!.uid.toString();
-      }catch(e){
-        showSnackBar(context, e.toString());
-      }
-    }
-  }
-
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) {  },
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.0),
-          child: AppBar(
-            backgroundColor: const Color.fromRGBO(255, 255, 255, 0),
-            titleTextStyle: const TextStyle(
-                color: Color.fromRGBO(91, 91, 91, 1),
-                fontFamily: 'NotoSansKR-Bold',
-                fontSize: 23),
-            elevation: 0,
-            centerTitle: false,
-            title: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('user').doc(loggedUserUid).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
-                  if(snapshot.hasData){
-                    loggedUserName = snapshot.data!['name'];
-                    return Padding(
-                      padding: const EdgeInsets.only(left:10),
-                      child: Text('안녕하세요, ${loggedUserName}님 🫠',),
-                    );
-                  }
-                  return const Padding(
-                    padding: EdgeInsets.only(left:10),
-                    child: Text(''),
-                  );
-                },
-            )
-          ),
-        ),
-        body: Center(child: Column(
+    return Scaffold(
+      body: Center(
+        child: Column(
           children: [
-            Text('${Provider.of<CoupleInfo>(context,listen: false)}'),
-            ElevatedButton(
-              onPressed: (){
-                Provider.of<CoupleInfo>(context).changeCoupleInfo();
-              },
-              child: Text('button'),
+            Text('userUid : ${Provider.of<LoggedUserInfo>(context).userUid}'),
+            Text('userName : ${Provider.of<LoggedUserInfo>(context).username}'),
+            Text('userEmail : ${Provider.of<LoggedUserInfo>(context).useremail}'),
+            Text('coupleState : ${Provider.of<LoggedUserInfo>(context).coupleState}'),
+            Text('coupleUserUid : ${Provider.of<LoggedUserInfo>(context).coupleUserUid}'),
+            Text('coupleUserName : ${Provider.of<LoggedUserInfo>(context).coupleUserName}'),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          unselectedItemColor: Theme.of(context).primaryColorLight,
+          selectedItemColor: Theme.of(context).primaryColor,
+          unselectedFontSize: 10,
+          selectedFontSize: 10,
+          onTap: (index){
+            switch(index){
+              case 0:
+                Navigator.pushReplacement(context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) => MainPage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+                break;
+              case 1:
+                Navigator.pushReplacement(context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) => ListPage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+                break;
+              case 2:
+                Navigator.pushReplacement(context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) => ChattingRoomPage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+                break;
+              case 3:
+                Navigator.pushReplacement(context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) => SettingsPage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+                break;
+            }
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'home'
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                label: 'list'
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'chat'
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'settings'
             ),
           ],
-        ),),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            unselectedItemColor: Theme.of(context).primaryColorLight,
-            selectedItemColor: Theme.of(context).primaryColor,
-            unselectedFontSize: 10,
-            selectedFontSize: 10,
-            onTap: (index){
-              switch(index){
-                case 0:
-                  Navigator.pushReplacement(context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) => MainPage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  break;
-                case 1:
-                  Navigator.pushReplacement(context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) => ListPage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  break;
-                case 2:
-                  Navigator.pushReplacement(context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) => ChattingRoomPage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  break;
-                case 3:
-                  Navigator.pushReplacement(context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) => SettingsPage(),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
-                  break;
-              }
-            },
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'home'
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.list),
-                  label: 'list'
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.chat),
-                  label: 'chat'
-              ),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'settings'
-              ),
-            ],
-          ),
         ),
       ),
     );
