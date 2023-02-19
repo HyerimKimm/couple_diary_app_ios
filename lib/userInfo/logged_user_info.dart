@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
 
 class LoggedUserInfo with ChangeNotifier{
   var logger = Logger(printer: PrettyPrinter());
@@ -13,7 +10,8 @@ class LoggedUserInfo with ChangeNotifier{
   String userName='';
   String userEmail='';
   String userProfileUrl='';
-  String coupleState='';
+  String senderorreceiver='';
+  String coupleState='none';
   String coupleUserUid='';
 
   LoggedUserInfo(){
@@ -34,6 +32,7 @@ class LoggedUserInfo with ChangeNotifier{
       .then((value){
         if(value.size>0) {
           logger.d(value.docs[0].data());
+          senderorreceiver='sender';
           coupleUserUid = value.docs[0].get('receiverUid');
           coupleState = value.docs[0].get('state');
           notifyListeners();
@@ -44,6 +43,7 @@ class LoggedUserInfo with ChangeNotifier{
       .then((value){
         if(value.size>0){
           logger.d(value.docs[0].data());
+          senderorreceiver='receiver';
           coupleUserUid = value.docs[0].get('senderUid');
           coupleState = value.docs[0].get('state');
           notifyListeners();

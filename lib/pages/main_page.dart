@@ -14,22 +14,44 @@ class MainPage extends StatefulWidget{
 }
 
 class _MainPageState extends State<MainPage> {
+  String loggedUserUid='';
+  String loggedUserEmail='';
+  String loggedUserName='';
+  String loggedUserProfileUrl='';
+  String senderOrReceiver='';
+  String coupleState='';
+  String coupleUserUid='';
+
+  void getCurrentUser(){
+    loggedUserUid = Provider.of<LoggedUserInfo>(context).userUid;
+    loggedUserName = Provider.of<LoggedUserInfo>(context).userName;
+    loggedUserEmail = Provider.of<LoggedUserInfo>(context).userEmail;
+    loggedUserProfileUrl = Provider.of<LoggedUserInfo>(context).userProfileUrl;
+    senderOrReceiver=Provider.of<LoggedUserInfo>(context).senderorreceiver;
+    coupleState = Provider.of<LoggedUserInfo>(context).coupleState;
+    coupleUserUid = Provider.of<LoggedUserInfo>(context).coupleUserUid;
+  }
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('userUid : ${Provider.of<LoggedUserInfo>(context).userUid}'),
-            Text('userName : ${Provider.of<LoggedUserInfo>(context).userName}'),
-            Text('userEmail : ${Provider.of<LoggedUserInfo>(context).userEmail}'),
-            Text('coupleState : ${Provider.of<LoggedUserInfo>(context).coupleState}'),
-            Text('coupleUserUid : ${Provider.of<LoggedUserInfo>(context).coupleUserUid}'),
-          ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: AppBar(
+          backgroundColor : Color.fromRGBO(0, 0, 0, 0),
+          elevation: 0,
+          centerTitle: false,
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('${loggedUserName}님, 안녕하세요🫠', style: TextStyle(color: Colors.black,),),
+          ),
         ),
       ),
+      body: coupleState=='none'?SearchMyCouple()
+          :coupleState=='couple'?CoupleUser()
+          :senderOrReceiver=='sender'?CoupleSenderUser()
+          :CoupleReceiverUser(),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: BottomNavigationBar(

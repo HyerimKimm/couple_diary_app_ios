@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:couple_diary_app/userInfo/logged_user_info.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchCouplePage extends StatefulWidget {
   const SearchCouplePage({Key? key}) : super(key: key);
@@ -149,6 +151,7 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
 
                                             if(senderUid!='' && receiverUid!='') {
                                               _addCouple(senderUid, receiverUid);
+                                              Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
                                             }
                                           },
                                         icon: Icon(Icons.add),
