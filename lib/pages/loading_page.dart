@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:transition/transition.dart';
+import '../userInfo/logged_user_info.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -20,16 +21,7 @@ class _LoadingPageState extends State<LoadingPage> {
       Navigator.pushReplacement(
         context,
         Transition(
-          child: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                return const MainPage();
-              }else {
-                return const LoginPage();
-              }
-            },
-          ),
+          child: Provider.of<LoggedUserInfo>(context, listen: false).userUid==''?LoginPage():MainPage(),
           transitionEffect: TransitionEffect.FADE,
         ),
       );

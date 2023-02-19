@@ -7,7 +7,7 @@ import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:couple_diary_app/pages/myprofile_page.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
-import 'package:couple_diary_app/userInfo/user_info.dart';
+import 'package:couple_diary_app/userInfo/logged_user_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -31,14 +31,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _authentication = FirebaseAuth.instance;
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (value)=>LoggedUserInfo(userUid: _authentication.currentUser!.uid)),
+        ChangeNotifierProvider(
+            create: (value)=>LoggedUserInfo()
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(

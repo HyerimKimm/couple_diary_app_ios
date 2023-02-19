@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:couple_diary_app/userInfo/logged_user_info.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import '../utils/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -157,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                                             password: password);
                                   if(newUser.user!=null){
                                     showSnackBar(context, '로그인 성공!');
+                                    Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
                                     Navigator.pushReplacementNamed(context, '/main');
                                   }
                                 }catch(e){

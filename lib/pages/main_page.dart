@@ -1,7 +1,7 @@
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
-import '../userInfo/user_info.dart';
+import '../userInfo/logged_user_info.dart';
 import 'chattingroom_page.dart';
 import 'package:provider/provider.dart';
 
@@ -14,17 +14,19 @@ class MainPage extends StatefulWidget{
 }
 
 class _MainPageState extends State<MainPage> {
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('userUid : ${Provider.of<LoggedUserInfo>(context).userUid}'),
-            Text('userName : ${Provider.of<LoggedUserInfo>(context).username}'),
-            Text('userEmail : ${Provider.of<LoggedUserInfo>(context).useremail}'),
+            Text('userName : ${Provider.of<LoggedUserInfo>(context).userName}'),
+            Text('userEmail : ${Provider.of<LoggedUserInfo>(context).userEmail}'),
             Text('coupleState : ${Provider.of<LoggedUserInfo>(context).coupleState}'),
             Text('coupleUserUid : ${Provider.of<LoggedUserInfo>(context).coupleUserUid}'),
-            Text('coupleUserName : ${Provider.of<LoggedUserInfo>(context).coupleUserName}'),
           ],
         ),
       ),

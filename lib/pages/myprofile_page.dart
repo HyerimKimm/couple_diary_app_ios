@@ -2,9 +2,11 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:couple_diary_app/userInfo/logged_user_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../utils/buttons.dart';
 import '../utils/snackBar.dart';
 import 'dart:io';
@@ -18,9 +20,7 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  final _authentication = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
-  User? loggedUser;
   String loggedUserUid='';
   String loggedUserEmail='';
   String loggedUserName='';
@@ -48,28 +48,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
     });
   }
 
-  @override
-  void initState(){
-    super.initState();
-    getCurrentUser();
-  }
-
   void getCurrentUser(){
-    final user = _authentication.currentUser;
-
-    if(user != null){ //로그인 정보가 있으면
-      try{
-        loggedUser = user;
-        loggedUserUid = loggedUser!.uid.toString();
-        loggedUserEmail = loggedUser!.email.toString();
-      }catch(e){
-        showSnackBar(context, e.toString());
-      }
-    }
+    loggedUserUid = Provider.of<LoggedUserInfo>(context).userUid;
+    loggedUserName = Provider.of<LoggedUserInfo>(context).userName;
+    loggedUserEmail = Provider.of<LoggedUserInfo>(context).userEmail;
+    loggedUserProfileUrl = Provider.of<LoggedUserInfo>(context).userProfileUrl;
   }
 
   @override
   Widget build(BuildContext context) {
+    getCurrentUser();
     return  Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -221,6 +209,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           await FirebaseFirestore.instance.collection('user').doc(loggedUserUid).set({
                             'name': loggedUserName,},SetOptions(merge: true));
                           showSnackBar(context, '수정되었습니다 💞');
+                          Provider.of<LoggedUserInfo>(context).getUserInfo();
                         }
                       },
                       width: 300,
