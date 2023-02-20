@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import '../userInfo/logged_user_info.dart';
 import 'chattingroom_page.dart';
 import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
 
 
 class MainPage extends StatefulWidget{
@@ -51,7 +53,7 @@ class _MainPageState extends State<MainPage> {
       body: coupleState=='none'?SearchMyCouple()
           :coupleState=='couple'?CoupleUser()
           :senderOrReceiver=='sender'?CoupleSenderUser()
-          :CoupleReceiverUser(),
+          :CoupleReceiverUser(coupleUserUid: coupleUserUid,),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: BottomNavigationBar(
@@ -181,7 +183,9 @@ class _CoupleUserState extends State<CoupleUser> {
 
 //커플 신청을 받은 유저의 화면
 class CoupleReceiverUser extends StatefulWidget {
-  const CoupleReceiverUser({Key? key}) : super(key: key);
+  String coupleUserUid;
+
+  CoupleReceiverUser({Key? key, required this.coupleUserUid}) : super(key: key);
 
   @override
   State<CoupleReceiverUser> createState() => _CoupleReceiverUserState();
@@ -189,10 +193,30 @@ class CoupleReceiverUser extends StatefulWidget {
 class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
   @override
   Widget build(BuildContext context) {
+    var logger = Logger(printer: PrettyPrinter());
+
     return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return Text('커플 신청이 있습니다.');
-      },
+      stream: FirebaseFirestore.instance.collection('user').where("uid",isEqualTo: widget.coupleUserUid).snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        logger.d(widget.coupleUserUid);
+        if(snapshot.hasData){
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: Text('커플 신청이 있습니다!',style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),)),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+        return Column();
+      }
     );
   }
 }

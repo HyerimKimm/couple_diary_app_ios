@@ -127,14 +127,10 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                   children: [
                                     SizedBox(
                                       width:65,
-                                      child: Stack(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: Color.fromRGBO(123, 191, 239, 1),
-                                            backgroundImage: NetworkImage(documentSnapshot['profileUrl']),
-                                          ),
-                                        ]
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                                        backgroundImage: NetworkImage(documentSnapshot['profileUrl']),
                                       ),
                                     ),
                                     SizedBox(
