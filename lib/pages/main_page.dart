@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
+import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:flutter/material.dart';
 import '../userInfo/logged_user_info.dart';
 import 'chattingroom_page.dart';
@@ -195,28 +198,44 @@ class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
   Widget build(BuildContext context) {
     var logger = Logger(printer: PrettyPrinter());
 
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('user').where("uid",isEqualTo: widget.coupleUserUid).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        logger.d(widget.coupleUserUid);
+    return FutureBuilder(
+      future: FirebaseFirestore.instance.collection('user').doc(widget.coupleUserUid).get(),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
+        var logger = Logger(printer: PrettyPrinter());
         if(snapshot.hasData){
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(child: Text('커플 신청이 있습니다!',style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),)),
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Color.fromRGBO(123, 191, 239, 1),
-                  ),
-                ],
+              Text('커플 신청이 있습니다!', style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
+              SizedBox(height: 45,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                      backgroundImage: NetworkImage(snapshot.data!['profileUrl']),
+                    ),
+                    SizedBox(width: 15,),
+                    Text(snapshot.data!['name'],style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
+                  ],
+                ),
               ),
+              SizedBox(height: 45,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Buttons(text: Text('내 커플이 맞아요 😍', style: TextStyle(fontSize: 15),), onPressed: (){}, width: MediaQuery.of(context).size.width*0.45),
+                  Buttons(text: Text('내 커플이 아니예요ㅠ', style: TextStyle(fontSize: 15),), onPressed: (){}, width: MediaQuery.of(context).size.width*0.45),
+                ],
+              )
             ],
           );
         }
         return Column();
-      }
+      },
     );
   }
 }
@@ -238,4 +257,3 @@ class _CoupleSenderUserState extends State<CoupleSenderUser> {
     );
   }
 }
-
