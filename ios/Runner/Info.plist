@@ -53,5 +53,7 @@
     <string>We need an access</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>We need an access</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-6773853153851132~3847777878</string>
 </dict>
 </plist>
