@@ -26,6 +26,8 @@ class _MainPageState extends State<MainPage> {
   String senderOrReceiver='';
   String coupleState='';
   String coupleUserUid='';
+  final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
+  final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
   BannerAd? _bannerAd;
   bool _isLoaded = false;
@@ -37,24 +39,22 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _loadAd() async{
-    var logger = Logger(printer: PrettyPrinter());
     final Size screenSize = MediaQuery.of(context).size;
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-            screenSize.width.truncate()
-        );//truncate : screenSize를 integer로 만들어줌
 
-    if(size == null){ //기기 사이즈 정보 없으면 광고 안보여줌
-      print('Unable to get height of anchored banner.');
+    final AnchoredAdaptiveBannerAdSize? size
+    = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+        screenSize.width.truncate());
+
+    if(size == null){
+      print('Unable to get height of anchored banner');
       return;
     }
 
     _bannerAd = BannerAd(
-        size: size,
-        adUnitId: Platform.isAndroid
-            ?'ca-app-pub-6773853153851132/2002814366'
-            :'ca-app-pub-6773853153851132/9031257149',
-        listener: BannerAdListener(
+      size: size,
+      adUnitId: Platform.isAndroid?androidTestUnitId:iosTestUnitId,
+      request: AdRequest(),
+      listener: BannerAdListener(
           onAdLoaded: (Ad ad){
             setState(() {
               _bannerAd = ad as BannerAd;
@@ -62,12 +62,13 @@ class _MainPageState extends State<MainPage> {
             });
           },
           onAdFailedToLoad: (Ad ad, LoadAdError error){
-            logger.d('Anchored adaptive banner failedToLoad : $error');
+            var logger = Logger(printer: PrettyPrinter());
+            logger.d(error);
             ad.dispose();
-          },
-        ),
-        request: AdRequest(),
+          }
+      ),
     );
+
     _bannerAd!.load();
   }
 
@@ -104,18 +105,15 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
           children: [
-            bodyWidgetReturn(),
-            if(_bannerAd!=null && _isLoaded)
-              Container(
-                color: Color.fromRGBO(123, 191, 239, 1),
-                width: _bannerAd!.size.width.toDouble(),
-                height: _bannerAd!.size.height.toDouble(),
-                child: AdWidget(
-                  ad: _bannerAd!,
-                )
-              )
+            (_bannerAd !=null && _isLoaded)?
+            Container(
+              width: _bannerAd!.size.width.toDouble(),
+              height: _bannerAd!.size.height.toDouble(),
+              child: AdWidget(ad: _bannerAd!),
+            ):Container(),
+            Expanded(child: Center(child: bodyWidgetReturn())),
           ]
       ),
       bottomNavigationBar: Padding(
