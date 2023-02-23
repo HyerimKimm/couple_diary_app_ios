@@ -10,6 +10,7 @@ class LoggedUserInfo with ChangeNotifier{
   String userName='';
   String userEmail='';
   String userProfileUrl='';
+  String coupleId='';
   String senderorreceiver='';
   String coupleState='none';
   String coupleUserUid='';
@@ -31,10 +32,11 @@ class LoggedUserInfo with ChangeNotifier{
       var coupleSnapshot = FirebaseFirestore.instance.collection('couple').where('senderUid',isEqualTo: userUid).get()
       .then((value){
         if(value.size>0) {
-          logger.d(value.docs[0].data());
+          coupleId=value.docs[0].id;
           senderorreceiver='sender';
           coupleUserUid = value.docs[0].get('receiverUid');
           coupleState = value.docs[0].get('state');
+
           notifyListeners();
           return;
         }
@@ -42,8 +44,8 @@ class LoggedUserInfo with ChangeNotifier{
       coupleSnapshot = FirebaseFirestore.instance.collection('couple').where('receiverUid',isEqualTo: userUid).get()
       .then((value){
         if(value.size>0){
-          logger.d(value.docs[0].data());
           senderorreceiver='receiver';
+          coupleId=value.docs[0].id;
           coupleUserUid = value.docs[0].get('senderUid');
           coupleState = value.docs[0].get('state');
           notifyListeners();

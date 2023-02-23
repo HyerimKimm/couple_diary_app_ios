@@ -23,6 +23,7 @@ class _MainPageState extends State<MainPage> {
   String loggedUserEmail='';
   String loggedUserName='';
   String loggedUserProfileUrl='';
+  String coupleId = '';
   String senderOrReceiver='';
   String coupleState='';
   String coupleUserUid='';
@@ -40,16 +41,13 @@ class _MainPageState extends State<MainPage> {
 
   void _loadAd() async{
     final Size screenSize = MediaQuery.of(context).size;
-
     final AnchoredAdaptiveBannerAdSize? size
     = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
         screenSize.width.truncate());
-
     if(size == null){
       print('Unable to get height of anchored banner');
       return;
     }
-
     _bannerAd = BannerAd(
       size: size,
       adUnitId: Platform.isAndroid?androidTestUnitId:iosTestUnitId,
@@ -68,7 +66,6 @@ class _MainPageState extends State<MainPage> {
           }
       ),
     );
-
     _bannerAd!.load();
   }
 
@@ -76,7 +73,7 @@ class _MainPageState extends State<MainPage> {
     return coupleState=='none'?SearchMyCouple()
         :coupleState=='couple'?CoupleUser()
         :senderOrReceiver=='sender'?CoupleSenderUser()
-        :CoupleReceiverUser(coupleUserUid: coupleUserUid,);
+        :CoupleReceiverUser(coupleId: coupleId,coupleUserUid: coupleUserUid,);
   }
 
   void getCurrentUser(){
@@ -84,9 +81,14 @@ class _MainPageState extends State<MainPage> {
     loggedUserName = Provider.of<LoggedUserInfo>(context).userName;
     loggedUserEmail = Provider.of<LoggedUserInfo>(context).userEmail;
     loggedUserProfileUrl = Provider.of<LoggedUserInfo>(context).userProfileUrl;
+    coupleId = Provider.of<LoggedUserInfo>(context).coupleId;
     senderOrReceiver=Provider.of<LoggedUserInfo>(context).senderorreceiver;
     coupleState = Provider.of<LoggedUserInfo>(context).coupleState;
     coupleUserUid = Provider.of<LoggedUserInfo>(context).coupleUserUid;
+
+    var logger = Logger(printer: PrettyPrinter());
+    logger.d('loggedUserUid : ${loggedUserUid}');
+    logger.d('coupleId : ${coupleId}');
   }
 
   @override
@@ -195,31 +197,33 @@ class SearchMyCouple extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('커플을 등록해 보세요!', style: TextStyle(fontFamily: 'GangwonEduBold', fontSize: 23),),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: OutlinedButton.icon(
-              onPressed: (){
-                Navigator.pushNamed(context, '/searchCouple');
-              },
-              icon: Icon(Icons.search),
-              label: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('내 커플 찾기',style: TextStyle(fontFamily: 'GangwonEduBold',fontSize: 21),),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('커플을 등록해 보세요!', style: TextStyle(fontFamily: 'GangwonEduBold', fontSize: 23),),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: OutlinedButton.icon(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/searchCouple');
+                },
+                icon: Icon(Icons.search),
+                label: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('내 커플 찾기',style: TextStyle(fontFamily: 'GangwonEduBold',fontSize: 21),),
+                ),
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        )
+                    )
+                ),
               ),
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      )
-                  )
-              ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -245,9 +249,10 @@ class _CoupleUserState extends State<CoupleUser> {
 
 //커플 신청을 받은 유저의 화면
 class CoupleReceiverUser extends StatefulWidget {
+  String coupleId;
   String coupleUserUid;
 
-  CoupleReceiverUser({Key? key, required this.coupleUserUid}) : super(key: key);
+  CoupleReceiverUser({Key? key, required this.coupleId,required this.coupleUserUid}) : super(key: key);
 
   @override
   State<CoupleReceiverUser> createState() => _CoupleReceiverUserState();
@@ -262,48 +267,58 @@ class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
         var logger = Logger(printer: PrettyPrinter());
         if(snapshot.hasData){
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('커플 신청이 있습니다!', style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
-              SizedBox(height: 45,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Color.fromRGBO(123, 191, 239, 1),
-                      backgroundImage: NetworkImage(snapshot.data!['profileUrl']),
-                    ),
-                    SizedBox(width: 15,),
-                    Text(snapshot.data!['name'],style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
-                  ],
-                ),
-              ),
-              SizedBox(height: 45,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Buttons(
-                      text: Text(
-                        '내 커플이 맞아요 😍',
-                        style: TextStyle(fontSize: 15),
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('커플 신청이 있습니다!', style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
+                const SizedBox(height: 45,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundColor: const Color.fromRGBO(123, 191, 239, 1),
+                        backgroundImage: NetworkImage(snapshot.data!['profileUrl']),
                       ),
-                      onPressed: (){},
-                      width: MediaQuery.of(context).size.width*0.45),
-                  Buttons(
-                      text: Text(
-                        '내 커플이 아니예요ㅠ',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      onPressed: (){},
-                      width: MediaQuery.of(context).size.width*0.45
+                      const SizedBox(width: 15,),
+                      Text(snapshot.data!['name'],style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
+                    ],
                   ),
-                ],
-              )
-            ],
+                ),
+                SizedBox(height: 45,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Buttons(
+                        text: Text(
+                          '내 커플이 맞아요 😍',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        onPressed: () async{
+                          var logger = Logger(printer: PrettyPrinter());
+                          logger.d('docId : ${widget.coupleId}');
+                          await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId).set({
+                            'state': 'couple',},SetOptions(merge: true))
+                              .then((value){
+                            Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
+                              });
+                        },
+                        width: MediaQuery.of(context).size.width*0.45),
+                    Buttons(
+                        text: Text(
+                          '내 커플이 아니예요ㅠ',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        onPressed: (){},
+                        width: MediaQuery.of(context).size.width*0.45
+                    ),
+                  ],
+                )
+              ],
+            ),
           );
         }
         return Column();
