@@ -7,7 +7,7 @@ import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:couple_diary_app/pages/myprofile_page.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
-import 'package:couple_diary_app/userInfo/logged_user_info.dart';
+import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';

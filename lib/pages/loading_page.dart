@@ -2,9 +2,10 @@ import 'dart:async';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:transition/transition.dart';
-import '../userInfo/logged_user_info.dart';
+import '../user_info/logged_user_info.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -18,6 +19,8 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
+      var logger = Logger(printer:PrettyPrinter());
+      logger.d(Provider.of<LoggedUserInfo>(context, listen:false).userUid);
       Navigator.pushReplacement(
         context,
         Transition(

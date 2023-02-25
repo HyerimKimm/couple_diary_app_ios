@@ -1,9 +1,5 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:couple_diary_app/userInfo/logged_user_info.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';

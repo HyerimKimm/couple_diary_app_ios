@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:couple_diary_app/couple_info/d_day.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import '../userInfo/logged_user_info.dart';
+import '../user_info/logged_user_info.dart';
 import 'chattingroom_page.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
@@ -27,6 +28,7 @@ class _MainPageState extends State<MainPage> {
   String senderOrReceiver='';
   String coupleState='';
   String coupleUserUid='';
+  DateTime? coupleStartDate;
   final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
   final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
@@ -39,6 +41,7 @@ class _MainPageState extends State<MainPage> {
     _loadAd();
   }
 
+  //애드몹 광고를 불러왔을 때 화면 갱신해줌
   void _loadAd() async{
     final Size screenSize = MediaQuery.of(context).size;
     final AnchoredAdaptiveBannerAdSize? size
@@ -69,9 +72,10 @@ class _MainPageState extends State<MainPage> {
     _bannerAd!.load();
   }
 
+  //커플 컬랙션의 state에 따라 다른 위젯을 return함
   Widget bodyWidgetReturn(){
     return coupleState=='none'?SearchMyCouple()
-        :coupleState=='couple'?CoupleUser()
+        :coupleState=='couple'?CoupleUser(startDate: coupleStartDate,coupleID: coupleId,)
         :senderOrReceiver=='sender'?CoupleSenderUser()
         :CoupleReceiverUser(coupleId: coupleId,coupleUserUid: coupleUserUid,);
   }
@@ -82,13 +86,10 @@ class _MainPageState extends State<MainPage> {
     loggedUserEmail = Provider.of<LoggedUserInfo>(context).userEmail;
     loggedUserProfileUrl = Provider.of<LoggedUserInfo>(context).userProfileUrl;
     coupleId = Provider.of<LoggedUserInfo>(context).coupleId;
-    senderOrReceiver=Provider.of<LoggedUserInfo>(context).senderorreceiver;
+    senderOrReceiver=Provider.of<LoggedUserInfo>(context).senderOrReceiver;
     coupleState = Provider.of<LoggedUserInfo>(context).coupleState;
     coupleUserUid = Provider.of<LoggedUserInfo>(context).coupleUserUid;
-
-    var logger = Logger(printer: PrettyPrinter());
-    logger.d('loggedUserUid : ${loggedUserUid}');
-    logger.d('coupleId : ${coupleId}');
+    coupleStartDate = Provider.of<LoggedUserInfo>(context).coupleStartDate;
   }
 
   @override
@@ -231,7 +232,10 @@ class SearchMyCouple extends StatelessWidget {
 
 //커플 등록이 완료된 유저의 화면
 class CoupleUser extends StatefulWidget {
-  const CoupleUser({Key? key}) : super(key: key);
+  DateTime? startDate;
+  String coupleID;
+
+  CoupleUser({Key? key, required this.startDate, required this.coupleID}) : super(key: key);
 
   @override
   State<CoupleUser> createState() => _CoupleUserState();
@@ -239,10 +243,15 @@ class CoupleUser extends StatefulWidget {
 class _CoupleUserState extends State<CoupleUser> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return Text('커플입니다.');
-      },
+    return Column(
+      children: [
+        DDay(
+          coupleId: widget.coupleID,
+          startDate:widget.startDate,
+          width: MediaQuery.of(context).size.width*0.8,
+          height: 80,
+        ),
+      ],
     );
   }
 }
