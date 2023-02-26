@@ -44,56 +44,59 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 100,),
+            const SizedBox(height: 60,),
             //로그인 화면 이미지
             SizedBox(
                 width: 100,
                 height: 100,
                 child: Image.asset('assets/images/wedding.png')
             ),
-            const SizedBox(height: 40,),
+            const SizedBox(height: 35,),
             SizedBox(
-              height: 25,
+              height: 50,
               child: StreamBuilder(
                 stream: FirebaseFirestore.instance.collection('lessons').snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                     if(snapshot.hasData){
-                      return AnimatedTextKit(
-                        animatedTexts: [
-                          FadeAnimatedText('${snapshot.data!.docs[0]['contents']}',
-                            duration: Duration(seconds: 5),
-                            fadeInEnd: 0.05,
-                            fadeOutBegin: 0.9,
-                            textStyle: TextStyle(
+                      return Container(
+                        width: MediaQuery.of(context).size.width*0.8,
+                        child: AnimatedTextKit(
+                          animatedTexts: [
+                            FadeAnimatedText('${snapshot.data!.docs[0]['contents']}',
+                              duration: Duration(seconds: 5),
+                              fadeInEnd: 0.05,
+                              fadeOutBegin: 0.9,
+                              textStyle: TextStyle(
+                                fontFamily: 'GangwonEduBold',
+                                fontSize: 20,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                            ),
+                            FadeAnimatedText('${snapshot.data!.docs[1]['contents']}',
+                              duration: Duration(seconds:5),
+                              fadeInEnd: 0.05,
+                              fadeOutBegin: 0.9,
+                              textStyle: TextStyle(
+                                fontFamily: 'GangwonEduBold',
+                                fontSize: 20,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                            ),
+                            FadeAnimatedText('${snapshot.data!.docs[2]['contents']}',
+                              duration: Duration(seconds:5),
+                              fadeInEnd: 0.05,
+                              fadeOutBegin: 0.9,
+                              textStyle: TextStyle(
                               fontFamily: 'GangwonEduBold',
-                              fontSize: 23,
+                              fontSize: 20,
                               color: Theme.of(context).primaryColorDark,
+                              ),
                             ),
-                          ),
-                          FadeAnimatedText('${snapshot.data!.docs[1]['contents']}',
-                            duration: Duration(seconds:5),
-                            fadeInEnd: 0.05,
-                            fadeOutBegin: 0.9,
-                            textStyle: TextStyle(
-                              fontFamily: 'GangwonEduBold',
-                              fontSize: 23,
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                          ),
-                          FadeAnimatedText('${snapshot.data!.docs[2]['contents']}',
-                            duration: Duration(seconds:5),
-                            fadeInEnd: 0.05,
-                            fadeOutBegin: 0.9,
-                            textStyle: TextStyle(
-                            fontFamily: 'GangwonEduBold',
-                            fontSize: 23,
-                            color: Theme.of(context).primaryColorDark,
-                            ),
-                          ),
-                        ],
-                        pause: Duration(seconds: 3),
-                        repeatForever: true,
+                          ],
+                          pause: Duration(seconds: 3),
+                          repeatForever: true,
+                        ),
                       );
                     }
                     return const CircularProgressIndicator();

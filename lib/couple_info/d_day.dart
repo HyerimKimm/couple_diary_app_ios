@@ -3,6 +3,7 @@ import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class _DDayState extends State<DDay> {
             ),
           ],
         ),
-        child: widget.startDate==null?NoCoupleDday(coupleId: widget.coupleId,) :CoupleDday(),
+        child: widget.startDate==null?NoCoupleDday(coupleId: widget.coupleId,) :CoupleDday(startDate: widget.startDate,),
       ),
     );
   }
@@ -53,7 +54,6 @@ class _DDayState extends State<DDay> {
 //D-day를 입력받는 위젯
 class NoCoupleDday extends StatefulWidget {
   String coupleId;
-
   NoCoupleDday({Key? key, required this.coupleId}) : super(key: key);
 
   @override
@@ -135,12 +135,15 @@ class _NoCoupleDdayState extends State<NoCoupleDday> {
 
 //Dday값이 있을 경우 출력하는 위젯
 class CoupleDday extends StatefulWidget {
-  const CoupleDday({Key? key}) : super(key: key);
+  CoupleDday({Key? key, required this.startDate}) : super(key: key);
+  DateTime? startDate;
 
   @override
   State<CoupleDday> createState() => _CoupleDdayState();
 }
 class _CoupleDdayState extends State<CoupleDday> {
+  DateTime nowDate = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -151,10 +154,10 @@ class _CoupleDdayState extends State<CoupleDday> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('D+1',
-                style: TextStyle(color:Colors.white, fontSize: 30),
+              Text('D+${nowDate.difference(widget.startDate!).inDays}',
+                style: TextStyle(color:Colors.white, fontSize: 25),
               ),
-              Text('처음 만난 날 : 2022.09.19',
+              Text('처음 만난 날 : ${DateFormat('yyyy-MM-dd').format(widget.startDate!)}',
                 style: TextStyle(fontSize: 15, color: Colors.white),)
             ],
           ),
