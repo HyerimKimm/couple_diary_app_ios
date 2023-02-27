@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/couple_info/d_day.dart';
+import 'package:couple_diary_app/couple_info/question.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../user_info/logged_user_info.dart';
 import 'chattingroom_page.dart';
@@ -35,6 +37,12 @@ class _MainPageState extends State<MainPage> {
   BannerAd? _bannerAd;
   bool _isLoaded = false;
 
+  @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
+  
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -243,15 +251,27 @@ class CoupleUser extends StatefulWidget {
 class _CoupleUserState extends State<CoupleUser> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DDay(
-          coupleId: widget.coupleID,
-          startDate:widget.startDate,
-          width: MediaQuery.of(context).size.width*0.8,
-          height: 80,
+    return SingleChildScrollView(
+      child: GestureDetector(
+        onTap: (){
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            DDay(
+              coupleId: widget.coupleID,
+              startDate:widget.startDate,
+              width: MediaQuery.of(context).size.width*0.8,
+              height: 80,
+            ),
+            Question(
+              width: MediaQuery.of(context).size.width,
+              height: 450,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
