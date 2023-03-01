@@ -19,8 +19,6 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      var logger = Logger(printer:PrettyPrinter());
-      logger.d(Provider.of<LoggedUserInfo>(context, listen:false).userUid);
       Navigator.pushReplacement(
         context,
         Transition(

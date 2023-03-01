@@ -36,12 +36,6 @@ class _MainPageState extends State<MainPage> {
 
   BannerAd? _bannerAd;
   bool _isLoaded = false;
-
-  @override
-  void initState(){
-    super.initState();
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  }
   
   @override
   void didChangeDependencies() {
@@ -117,6 +111,7 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             (_bannerAd !=null && _isLoaded)?
             Container(
@@ -251,27 +246,20 @@ class CoupleUser extends StatefulWidget {
 class _CoupleUserState extends State<CoupleUser> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: GestureDetector(
-        onTap: (){
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DDay(
-              coupleId: widget.coupleID,
-              startDate:widget.startDate,
-              width: MediaQuery.of(context).size.width*0.8,
-              height: 80,
-            ),
-            Question(
-              width: MediaQuery.of(context).size.width,
-              height: 450,
-            ),
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        DDay(
+          coupleId: widget.coupleID,
+          startDate:widget.startDate,
+          width: MediaQuery.of(context).size.width*0.8,
+          height: 80,
         ),
-      ),
+        Question(
+          width: MediaQuery.of(context).size.width,
+          height: 450,
+        ),
+      ],
     );
   }
 }
@@ -327,8 +315,6 @@ class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
                           style: TextStyle(fontSize: 15),
                         ),
                         onPressed: () async{
-                          var logger = Logger(printer: PrettyPrinter());
-                          logger.d('docId : ${widget.coupleId}');
                           await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId).set({
                             'state': 'couple',},SetOptions(merge: true))
                               .then((value){

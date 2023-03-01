@@ -15,6 +15,7 @@ class LoggedUserInfo with ChangeNotifier{
   String coupleState='none';
   String coupleUserUid='';
   DateTime? coupleStartDate;
+  String coupleChatUid='';
 
   LoggedUserInfo(){
     getUserInfo();
@@ -39,8 +40,9 @@ class LoggedUserInfo with ChangeNotifier{
             senderOrReceiver='sender';
             coupleUserUid = value.docs[0].get('receiverUid');
             coupleState = value.docs[0].get('state');
-            coupleStartDate = value.docs[0].get('startDate');
-            logger.d('coupleStartDate : ${coupleStartDate.toString()}');
+            coupleStartDate = (value.docs[0].get('startDate')).toDate();
+            coupleChatUid = value.docs[0].get('chatUid');
+            print('coupleStarDate : ${coupleStartDate}');
             notifyListeners();
             return;
           }
@@ -55,6 +57,8 @@ class LoggedUserInfo with ChangeNotifier{
             coupleUserUid = value.docs[0].get('senderUid');
             coupleState = value.docs[0].get('state');
             coupleStartDate = (value.docs[0].get('startDate')).toDate();
+            coupleChatUid = value.docs[0].get('chatUid');
+            print('coupleStarDate : ${coupleStartDate}');
             notifyListeners();
             return;
           }

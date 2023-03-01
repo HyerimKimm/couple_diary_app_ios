@@ -16,29 +16,6 @@ class Question extends StatelessWidget {
           image: AssetImage('assets/images/demian.jpeg'),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          StreamBuilder(
-            stream: null,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              return Center(
-                child: Text('test', style: TextStyle(color: Colors.white),),
-              );
-            },
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width*0.8,
-            child: TextFormField(
-              minLines: 1,
-              maxLines: 5,
-              decoration: InputDecoration(
-                  icon: Icon(Icons.edit, color: Colors.white,)
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
