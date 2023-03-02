@@ -1,4 +1,4 @@
-import 'package:couple_diary_app/pages/chatting_page.dart';
+import 'package:couple_diary_app/pages/chattingroom_page.dart';
 import 'package:couple_diary_app/pages/create_account_page.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/loading_page.dart';
@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
           '/createAccount' : (context) => const CreateAccountPage(),
           '/main' : (context) => const MainPage(),
           '/list' : (context) => const ListPage(),
-          '/chatting' : (context) =>const ChattingPage(),
+          '/chatting' : (context) =>const ChattingRoomPage(),
           '/settings' : (context) => const SettingsPage(),
           '/myProfile' : (context) => const MyProfilePage(),
           '/searchCouple' : (context) => const SearchCouplePage(),

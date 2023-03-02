@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:transition/transition.dart';
 import '../utils/buttons.dart';
-import 'chatting_page.dart';
 import 'chattingroom_page.dart';
 import 'list_page.dart';
 

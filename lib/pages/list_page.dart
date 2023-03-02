@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'dart:io';
-
-import 'chatting_page.dart';
 import 'chattingroom_page.dart';
 import 'main_page.dart';
 

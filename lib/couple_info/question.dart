@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Question extends StatelessWidget {
@@ -15,6 +18,17 @@ class Question extends StatelessWidget {
           fit: BoxFit.cover,
           image: AssetImage('assets/images/demian.jpeg'),
         ),
+      ),
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('coupleQnA').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if(snapshot.connectionState==ConnectionState.waiting) return Text('');
+          final snapshotDocs = snapshot.data!.docs;
+          int randomIndex = Random().nextInt(snapshotDocs.length);
+          String data = snapshotDocs[randomIndex]['question'];
+          print(data);
+          return Center(child: Text('${data}', style: TextStyle(color: Colors.white),));
+        },
       ),
     );
   }
