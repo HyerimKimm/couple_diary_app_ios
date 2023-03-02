@@ -3,16 +3,30 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Question extends StatelessWidget {
+class Question extends StatefulWidget {
   double width;
   double height;
+
   Question({Key? key, required this.width, required this.height}) : super(key: key);
+
+  @override
+  State<Question> createState() => _QuestionState();
+}
+
+class _QuestionState extends State<Question> {
+  late int randomIndex;
+
+  @override
+  void initState(){
+    super.initState();
+    randomIndex=0;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
+      width: widget.width,
+      height: widget.height,
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
@@ -24,7 +38,8 @@ class Question extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if(snapshot.connectionState==ConnectionState.waiting) return Text('');
           final snapshotDocs = snapshot.data!.docs;
-          int randomIndex = Random().nextInt(snapshotDocs.length);
+
+          randomIndex = (randomIndex==0)?Random().nextInt(snapshotDocs.length):randomIndex;
           String data = snapshotDocs[randomIndex]['question'];
           print(data);
           return Center(child: Text('${data}', style: TextStyle(color: Colors.white),));
