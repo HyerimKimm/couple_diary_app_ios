@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:flutter/material.dart';
 
 class Question extends StatefulWidget {
@@ -42,7 +43,26 @@ class _QuestionState extends State<Question> {
           randomIndex = (randomIndex==0)?Random().nextInt(snapshotDocs.length):randomIndex;
           String data = snapshotDocs[randomIndex]['question'];
           print(data);
-          return Center(child: Text('${data}', style: TextStyle(color: Colors.white),));
+          return Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text(
+                        '${data}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 23,
+                          fontFamily: 'GangwonEduBold'
+                        ),
+                      )
+                  ),
+                ),
+              ),
+
+            ],
+          );
         },
       ),
     );
