@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -69,12 +70,16 @@ class _ListPageState extends State<ListPage> {
           title: Text('목록', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
       ),
-      body: (_bannerAd !=null && _isLoaded)?
-        Container(
-          width: _bannerAd!.size.width.toDouble(),
-          height: _bannerAd!.size.height.toDouble(),
-          child: AdWidget(ad: _bannerAd!),
-        ):Container(),
+      body: Column(
+        children: [
+          (_bannerAd !=null && _isLoaded)?
+          Container(
+            width: _bannerAd!.size.width.toDouble(),
+            height: _bannerAd!.size.height.toDouble(),
+            child: AdWidget(ad: _bannerAd!),
+          ):Container(),
+        ],
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: BottomNavigationBar(
