@@ -5,6 +5,7 @@ import 'package:couple_diary_app/pages/loading_page.dart';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:couple_diary_app/pages/myprofile_page.dart';
+import 'package:couple_diary_app/pages/post.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';

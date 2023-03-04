@@ -23,7 +23,7 @@ class _ListPageState extends State<ListPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _loadAd();
+    if(_isLoaded==false) _loadAd();
   }
 
   void _loadAd() async{

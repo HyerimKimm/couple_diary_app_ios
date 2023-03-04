@@ -33,13 +33,13 @@ class _DDayState extends State<DDay> {
         width: widget.width,
         height: widget.height,
         decoration: const BoxDecoration(
-          color: Color.fromRGBO(123, 191, 239, 1),
+          color: Color.fromRGBO(123, 191, 239, 0),
           borderRadius: BorderRadius.all(
             Radius.circular(25),
           ),
           boxShadow: [
             BoxShadow(
-              color: Color.fromRGBO(190, 190, 190, 1),
+              color: Color.fromRGBO(255, 255, 255, 0.1),
               blurRadius: 1,
               spreadRadius: 1.5,
             ),

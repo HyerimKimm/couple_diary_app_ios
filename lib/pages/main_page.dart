@@ -71,7 +71,7 @@ class _MainPageState extends State<MainPage> {
           }
       ),
     );
-    _bannerAd!.load();
+    _isLoaded==false?_bannerAd!.load():null;
   }
 
   //커플 컬랙션의 state에 따라 다른 위젯을 return함
@@ -119,7 +119,17 @@ class _MainPageState extends State<MainPage> {
               height: _bannerAd!.size.height.toDouble(),
               child: AdWidget(ad: _bannerAd!),
             ):Container(),
-            Expanded(child: Center(child: bodyWidgetReturn())),
+            Expanded(
+                child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            fit:BoxFit.fill,
+                            image: AssetImage('assets/images/demian.jpeg')
+                        )
+                    ),
+                    child: Center(child: bodyWidgetReturn())
+                )
+            ),
           ]
       ),
       bottomNavigationBar: Padding(
@@ -205,25 +215,27 @@ class SearchMyCouple extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('커플을 등록해 보세요!', style: TextStyle(fontFamily: 'GangwonEduBold', fontSize: 23),),
+            Text('커플을 등록해 보세요!', style: TextStyle(color:Colors.white, fontFamily: 'GangwonEduBold', fontSize: 23),),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: OutlinedButton.icon(
                 onPressed: (){
                   Navigator.pushNamed(context, '/searchCouple');
                 },
-                icon: Icon(Icons.search),
+                icon: Icon(Icons.search, color: Colors.black,),
                 label: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('내 커플 찾기',style: TextStyle(fontFamily: 'GangwonEduBold',fontSize: 21),),
+                  child: Text('내 커플 찾기',
+                    style: TextStyle(
+                        fontFamily: 'GangwonEduBold',fontSize: 21,color: Colors.black,
+                    ),),
                 ),
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        )
-                    )
-                ),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(255, 255, 255, 0.5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)
+                  )
+                )
               ),
             )
           ],
@@ -246,20 +258,20 @@ class CoupleUser extends StatefulWidget {
 class _CoupleUserState extends State<CoupleUser> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        DDay(
-          coupleId: widget.coupleID,
-          startDate:widget.startDate,
-          width: MediaQuery.of(context).size.width*0.8,
-          height: 80,
-        ),
-        Question(
-          width: MediaQuery.of(context).size.width,
-          height: 450,
-        ),
-      ],
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          DDay(
+            coupleId: widget.coupleID,
+            startDate:widget.startDate,
+            width: MediaQuery.of(context).size.width*0.8,
+            height: 80,
+          ),
+          Question(),
+          SizedBox(height: 80,)
+        ],
+      ),
     );
   }
 }
@@ -277,62 +289,83 @@ class CoupleReceiverUser extends StatefulWidget {
 class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
   @override
   Widget build(BuildContext context) {
-    var logger = Logger(printer: PrettyPrinter());
-
     return FutureBuilder(
       future: FirebaseFirestore.instance.collection('user').doc(widget.coupleUserUid).get(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>> snapshot) {
         var logger = Logger(printer: PrettyPrinter());
         if(snapshot.hasData){
           return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('커플 신청이 있습니다!', style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
-                const SizedBox(height: 45,),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundColor: const Color.fromRGBO(123, 191, 239, 1),
-                        backgroundImage: NetworkImage(snapshot.data!['profileUrl']),
-                      ),
-                      const SizedBox(width: 15,),
-                      Text(snapshot.data!['name'],style: TextStyle(fontSize: 20, fontFamily: 'NotoSansKR-Regular'),),
-                    ],
-                  ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(255, 255, 255, 0.1),
+                  borderRadius: BorderRadius.circular(10.0)
                 ),
-                SizedBox(height: 45,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Buttons(
-                        text: Text(
-                          '내 커플이 맞아요 😍',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        onPressed: () async{
-                          await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId).set({
-                            'state': 'couple',},SetOptions(merge: true))
-                              .then((value){
-                            Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
-                              });
-                        },
-                        width: MediaQuery.of(context).size.width*0.45),
-                    Buttons(
-                        text: Text(
-                          '내 커플이 아니예요ㅠ',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        onPressed: (){},
-                        width: MediaQuery.of(context).size.width*0.45
+                    SizedBox(height: 20,),
+                    const Text(
+                      '커플 신청이 있습니다!',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'GangwonEduBold',
+                          color: Colors.white,
+                      ),
                     ),
+                    const SizedBox(height: 45,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundColor: const Color.fromRGBO(123, 191, 239, 1),
+                            backgroundImage: NetworkImage(snapshot.data!['profileUrl']),
+                          ),
+                          const SizedBox(width: 15,),
+                          Text(snapshot.data!['name'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontFamily: 'GangwonEduBold'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 45,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Buttons(
+                            text: Text(
+                              '내 커플이 맞아요 😍',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            onPressed: () async{
+                              await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId).set({
+                                'state': 'couple',},SetOptions(merge: true))
+                                  .then((value){
+                                Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
+                                  });
+                            },
+                            width: MediaQuery.of(context).size.width*0.45),
+                        Buttons(
+                            text: Text(
+                              '내 커플이 아니예요ㅠ',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            onPressed: (){},
+                            width: MediaQuery.of(context).size.width*0.45
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,)
                   ],
-                )
-              ],
+                ),
+              ),
             ),
           );
         }
@@ -352,10 +385,15 @@ class CoupleSenderUser extends StatefulWidget {
 class _CoupleSenderUserState extends State<CoupleSenderUser> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        return Text('커플 수락 대기중입니다.');
-      },
+    return Center(
+      child: Text(
+        '커플 수락 대기중입니다.',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontFamily: 'GangwonEduBold'
+        ),
+      ),
     );
   }
 }

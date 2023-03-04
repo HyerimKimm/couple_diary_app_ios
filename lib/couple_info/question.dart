@@ -1,14 +1,11 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:flutter/material.dart';
 
-class Question extends StatefulWidget {
-  double width;
-  double height;
+import '../pages/post.dart';
 
-  Question({Key? key, required this.width, required this.height}) : super(key: key);
+class Question extends StatefulWidget {
+  Question({Key? key}) : super(key: key);
 
   @override
   State<Question> createState() => _QuestionState();
@@ -26,41 +23,92 @@ class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.width,
-      height: widget.height,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/demian.jpeg'),
-        ),
-      ),
       child: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('coupleQnA').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if(snapshot.connectionState==ConnectionState.waiting) return Text('');
           final snapshotDocs = snapshot.data!.docs;
-
           randomIndex = (randomIndex==0)?Random().nextInt(snapshotDocs.length):randomIndex;
           String data = snapshotDocs[randomIndex]['question'];
           print(data);
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                      child: Text(
-                        '${data}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 23,
-                          fontFamily: 'GangwonEduBold'
-                        ),
-                      )
-                  ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+                child: Center(
+                    child: Text(
+                      '${data}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 23,
+                        fontFamily: 'GangwonEduBold'
+                      ),
+                    )
                 ),
               ),
-
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(123, 191, 239, 0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)
+                      )
+                    ),
+                    onPressed: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Post(question: data,))
+                      );
+                    },
+                    icon: Icon(
+                      Icons.edit,
+                      size: 24.0,
+                    ),
+                    label: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '답변 쓰기',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'GangwonEduBold',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                  ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(143, 232, 136, 0.5),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)
+                        )
+                    ),
+                    onPressed: (){
+                      setState(() {
+                        randomIndex=Random().nextInt(snapshotDocs.length);
+                      });
+                    },
+                    icon: Icon(
+                      Icons.refresh,
+                      size: 24.0,
+                    ),
+                    label: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '새로고침',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'GangwonEduBold',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           );
         },
