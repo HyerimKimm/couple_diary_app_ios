@@ -42,7 +42,6 @@ class LoggedUserInfo with ChangeNotifier{
             coupleState = value.docs[0].get('state');
             coupleStartDate = (value.docs[0].get('startDate')).toDate();
             coupleChatUid = value.docs[0].get('chatUid');
-            print('coupleStarDate : ${coupleStartDate}');
             notifyListeners();
             return;
           }
@@ -58,7 +57,6 @@ class LoggedUserInfo with ChangeNotifier{
             coupleState = value.docs[0].get('state');
             coupleStartDate = (value.docs[0].get('startDate')).toDate();
             coupleChatUid = value.docs[0].get('chatUid');
-            print('coupleStarDate : ${coupleStartDate}');
             notifyListeners();
             return;
           }

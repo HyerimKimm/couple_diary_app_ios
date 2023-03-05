@@ -34,7 +34,10 @@ class _ChatBubblesState extends State<ChatBubbles> {
                       child: Text(snapshot.data!['name'],),
                     ),
                     ChatBubble(
-                      clipper: ChatBubbleClipper4(type: BubbleType.sendBubble),
+                      clipper: ChatBubbleClipper4(
+                        radius: 13,
+                        type: BubbleType.sendBubble
+                      ),
                       alignment: Alignment.topRight,
                       margin: EdgeInsets.only(top: 0),
                       backGroundColor: Color.fromRGBO(123, 191, 239, 1),
@@ -65,10 +68,13 @@ class _ChatBubblesState extends State<ChatBubbles> {
                   child: Text(snapshot.data!['name'],),
                 ),
                 ChatBubble(
-                  clipper: ChatBubbleClipper4(type: BubbleType.receiverBubble),
+                  clipper: ChatBubbleClipper4(
+                    type: BubbleType.receiverBubble,
+                    radius: 13,
+                  ),
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(top: 0),
-                  backGroundColor: Color.fromRGBO(123, 191, 239, 1),
+                  backGroundColor: Color.fromRGBO(190, 190, 190, 1),
                   child: Container(
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.7,

@@ -22,7 +22,7 @@ class _AnswerState extends State<Answer> {
     String answer='';
 
     void _addAnswer() async{
-      print(widget.coupleId);
+      answer = answerController.text;
       await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
           .collection('QnAanswer').add(
           {
@@ -58,15 +58,6 @@ class _AnswerState extends State<Answer> {
           child: Form(
             child: TextFormField(
                 controller: answerController,
-                validator: (value){
-                  if(value!.isEmpty){
-                    return '답변을 입력해 주세요!';
-                  }
-                  return null;
-                },
-                onSaved: (value){
-                  answer = value!;
-                },
                 maxLines: 8,
                 style: const TextStyle(
                   color: Colors.white,

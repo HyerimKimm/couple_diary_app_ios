@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
+import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+import '../couple_info/answer_list.dart';
 import 'chattingroom_page.dart';
 import 'main_page.dart';
 
@@ -58,11 +61,14 @@ class _ListPageState extends State<ListPage> {
         ),
     );
 
-    _bannerAd!.load();
+    if(_isLoaded==false) _bannerAd!.load();
   }
 
   @override
   Widget build(BuildContext context) {
+    final String userId = Provider.of<LoggedUserInfo>(context).userUid;
+    final String coupleId = Provider.of<LoggedUserInfo>(context).coupleId;
+
     return Scaffold(
       appBar : PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -78,6 +84,14 @@ class _ListPageState extends State<ListPage> {
             height: _bannerAd!.size.height.toDouble(),
             child: AdWidget(ad: _bannerAd!),
           ):Container(),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(123, 191, 239, 1),
+              ),
+              child: AnswerList(coupleId: coupleId,),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: Padding(

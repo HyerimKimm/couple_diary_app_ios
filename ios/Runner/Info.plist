@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key> NSCameraUsageDescription</key>
+	<string>We need an access</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -24,8 +26,14 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-6773853153851132~3847777878</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need an access</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need an access</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -47,13 +55,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need an access</string>
-	<key> NSCameraUsageDescription</key>
-    <string>We need an access</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>We need an access</string>
-    <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-6773853153851132~3847777878</string>
 </dict>
 </plist>

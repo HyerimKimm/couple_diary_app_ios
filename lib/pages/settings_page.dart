@@ -1,8 +1,10 @@
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
+import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:transition/transition.dart';
 import '../utils/buttons.dart';
 import 'chattingroom_page.dart';
@@ -16,10 +18,12 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final _authentication = FirebaseAuth.instance;
+  final _authentication = FirebaseAuth.instance; //로그아웃용
 
   @override
   Widget build(BuildContext context) {
+    String coupleState = Provider.of<LoggedUserInfo>(context).coupleState;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0),
@@ -81,22 +85,30 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
                 break;
               case 1:
-                Navigator.pushReplacement(context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => ListPage(),
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  ),
-                );
+                if(coupleState=='couple'){
+                  Navigator.pushReplacement(context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) => ListPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                } else{
+                  showSnackBar(context, '커플 등록 후 이용 가능합니다!');
+                };
                 break;
               case 2:
-                Navigator.pushReplacement(context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) => ChattingRoomPage(),
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  ),
-                );
+                if(coupleState=='couple'){
+                  Navigator.pushReplacement(context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) => ChattingRoomPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                }else{
+                  showSnackBar(context, '커플 등록 후 이용 가능합니다!');
+                }
                 break;
               case 3:
                 Navigator.pushReplacement(context,
