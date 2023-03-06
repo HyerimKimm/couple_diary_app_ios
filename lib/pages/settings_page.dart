@@ -46,7 +46,9 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingsButton(
                 text: '공지사항',
                 width: MediaQuery.of(context).size.width,
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pushNamed(context, '/notice');
+                },
               ),
               SettingsButton(
                 text: '문의하기',

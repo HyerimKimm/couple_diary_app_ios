@@ -30,21 +30,23 @@ class _QuestionState extends State<Question> {
           final snapshotDocs = snapshot.data!.docs;
           randomIndex = (randomIndex==0)?Random().nextInt(snapshotDocs.length):randomIndex;
           String data = snapshotDocs[randomIndex]['question'];
-          print(data);
           return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                child: Center(
-                    child: Text(
-                      '${data}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 23,
-                        fontFamily: 'GangwonEduBold'
-                      ),
-                    )
+                child: SizedBox(
+                  height: 100,
+                  child: Center(
+                      child: Text(
+                        '${data}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 23,
+                          fontFamily: 'GangwonEduBold'
+                        ),
+                      )
+                  ),
                 ),
               ),
               Row(
@@ -62,11 +64,11 @@ class _QuestionState extends State<Question> {
                           MaterialPageRoute(builder: (context) => Post(question: data,))
                       );
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.edit,
                       size: 24.0,
                     ),
-                    label: Padding(
+                    label: const Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         '답변 쓰기',
@@ -78,10 +80,10 @@ class _QuestionState extends State<Question> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(width: 10,),
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromRGBO(143, 232, 136, 0.5),
+                        backgroundColor: const Color.fromRGBO(143, 232, 136, 0.5),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)
                         )
@@ -91,11 +93,11 @@ class _QuestionState extends State<Question> {
                         randomIndex=Random().nextInt(snapshotDocs.length);
                       });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.refresh,
                       size: 24.0,
                     ),
-                    label: Padding(
+                    label: const Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         '새로고침',
@@ -108,7 +110,9 @@ class _QuestionState extends State<Question> {
                     ),
                   ),
                 ],
-              )
+              ),
+              SizedBox(height: 50,)
+
             ],
           );
         },

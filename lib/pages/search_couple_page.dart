@@ -35,7 +35,8 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
       'receiverUid':receiverUid,
       'state':'wait',
       'time':Timestamp.now(),
-      'startDate':null
+      'startDate':null,
+      'chatUid':null,
     });
     final coupleInfo = await FirebaseFirestore.instance.collection('couple')
         .where('receiverUid',isEqualTo: receiverUid)
@@ -81,7 +82,7 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                           onSaved: (value){
                             searchInputData = value!;
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: '상대방의 이메일로 검색하세요'
                           ),
                         ),
@@ -95,7 +96,7 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
 
                         });
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.search,
                         color: Colors.grey,
                         size: 23,

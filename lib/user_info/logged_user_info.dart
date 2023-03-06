@@ -40,8 +40,12 @@ class LoggedUserInfo with ChangeNotifier{
             senderOrReceiver='sender';
             coupleUserUid = value.docs[0].get('receiverUid');
             coupleState = value.docs[0].get('state');
-            coupleStartDate = (value.docs[0].get('startDate')).toDate();
-            coupleChatUid = value.docs[0].get('chatUid');
+            if(coupleState=='couple'){
+              if(value.docs[0].get('startDate')!=null){
+                coupleStartDate = (value.docs[0].get('startDate')).toDate();
+              }
+              if(value.docs[0].get('chatUid')!=null) coupleChatUid = value.docs[0].get('chatUid');
+            }
             notifyListeners();
             return;
           }
@@ -55,12 +59,22 @@ class LoggedUserInfo with ChangeNotifier{
             coupleId=value.docs[0].id;
             coupleUserUid = value.docs[0].get('senderUid');
             coupleState = value.docs[0].get('state');
-            coupleStartDate = (value.docs[0].get('startDate')).toDate();
-            coupleChatUid = value.docs[0].get('chatUid');
+            if(coupleState=='couple'){
+              if(value.docs[0].get('startDate')!=null){
+                coupleStartDate = (value.docs[0].get('startDate')).toDate();
+              }
+              if(value.docs[0].get('chatUid')!=null) coupleChatUid = value.docs[0].get('chatUid');
+            }
             notifyListeners();
             return;
           }
         });
+        senderOrReceiver='';
+        coupleId='';
+        coupleState='none';
+        coupleUserUid='';
+        coupleStartDate=null;
+        coupleChatUid='';
         notifyListeners();
       });
     }

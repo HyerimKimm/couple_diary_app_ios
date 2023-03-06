@@ -66,14 +66,13 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String userId = Provider.of<LoggedUserInfo>(context).userUid;
     final String coupleId = Provider.of<LoggedUserInfo>(context).coupleId;
 
     return Scaffold(
       appBar : PreferredSize(
         preferredSize: Size.fromHeight(50.0),
         child: AppBar(
-          title: Text('목록', style: TextStyle(color: Theme.of(context).primaryColor),),
+          title: Text('문답 기록', style: TextStyle(color: Theme.of(context).primaryColor),),
         ),
       ),
       body: Column(
@@ -83,7 +82,12 @@ class _ListPageState extends State<ListPage> {
             width: _bannerAd!.size.width.toDouble(),
             height: _bannerAd!.size.height.toDouble(),
             child: AdWidget(ad: _bannerAd!),
-          ):Container(),
+          ):Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(123, 191, 239, 1),
+            ),
+          ),
           Expanded(
             child: Container(
               decoration: BoxDecoration(

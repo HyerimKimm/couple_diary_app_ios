@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:couple_diary_app/couple_info/couple_profile_design.dart';
 import 'package:couple_diary_app/couple_info/d_day.dart';
 import 'package:couple_diary_app/couple_info/question.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
@@ -78,7 +79,7 @@ class _MainPageState extends State<MainPage> {
   //커플 컬랙션의 state에 따라 다른 위젯을 return함
   Widget bodyWidgetReturn(){
     return coupleState=='none'?SearchMyCouple()
-        :coupleState=='couple'?CoupleUser(startDate: coupleStartDate,coupleID: coupleId,)
+        :coupleState=='couple'?CoupleUser(startDate: coupleStartDate,coupleID: coupleId,userUid: loggedUserUid, coupleUserUid: coupleUserUid,)
         :senderOrReceiver=='sender'?CoupleSenderUser()
         :CoupleReceiverUser(coupleId: coupleId,coupleUserUid: coupleUserUid,);
   }
@@ -119,7 +120,7 @@ class _MainPageState extends State<MainPage> {
               width: _bannerAd!.size.width.toDouble(),
               height: _bannerAd!.size.height.toDouble(),
               child: AdWidget(ad: _bannerAd!),
-            ):Container(),
+            ):Container(height: 50,),
             Expanded(
                 child: Container(
                     decoration: BoxDecoration(
@@ -128,7 +129,8 @@ class _MainPageState extends State<MainPage> {
                             image: AssetImage('assets/images/demian.jpeg')
                         )
                     ),
-                    child: Center(child: bodyWidgetReturn())
+                    child: Center(child:
+                    (_bannerAd !=null && _isLoaded)?bodyWidgetReturn():Container())
                 )
             ),
           ]
@@ -256,10 +258,12 @@ class SearchMyCouple extends StatelessWidget {
 
 //커플 등록이 완료된 유저의 화면
 class CoupleUser extends StatefulWidget {
+  String userUid;
+  String coupleUserUid;
   DateTime? startDate;
   String coupleID;
 
-  CoupleUser({Key? key, required this.startDate, required this.coupleID}) : super(key: key);
+  CoupleUser({Key? key, required this.startDate, required this.coupleID, required this.userUid, required this.coupleUserUid}) : super(key: key);
 
   @override
   State<CoupleUser> createState() => _CoupleUserState();
@@ -271,14 +275,16 @@ class _CoupleUserState extends State<CoupleUser> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          SizedBox(height: 20,),
           DDay(
             coupleId: widget.coupleID,
             startDate:widget.startDate,
             width: MediaQuery.of(context).size.width*0.8,
             height: 80,
           ),
-          Question(),
-          SizedBox(height: 80,)
+          SizedBox(height: 20,),
+          CoupleProfileDesign(userId: widget.userUid, coupleUserId: widget.coupleUserUid,),
+          Expanded(child: Question()),
         ],
       ),
     );
@@ -366,7 +372,12 @@ class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
                               '내 커플이 아니예요ㅠ',
                               style: TextStyle(fontSize: 15),
                             ),
-                            onPressed: (){},
+                            onPressed: () async{
+                              await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId).delete().then((value){
+                                Provider.of<LoggedUserInfo>(context, listen: false).getUserInfo();
+                                showSnackBar(context, '커플 등록이 거절되었습니다!');
+                              });
+                            },
                             width: MediaQuery.of(context).size.width*0.45
                         ),
                       ],

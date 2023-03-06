@@ -5,6 +5,7 @@ import 'package:couple_diary_app/pages/loading_page.dart';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:couple_diary_app/pages/myprofile_page.dart';
+import 'package:couple_diary_app/pages/notice_page.dart';
 import 'package:couple_diary_app/pages/post.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
@@ -82,6 +83,7 @@ class _MyAppState extends State<MyApp> {
           '/settings' : (context) => const SettingsPage(),
           '/myProfile' : (context) => const MyProfilePage(),
           '/searchCouple' : (context) => const SearchCouplePage(),
+          '/notice' : (context) => const NoticePage(),
         },
       ),
     );
