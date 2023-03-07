@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,27 +17,70 @@ class AnswerList extends StatefulWidget {
 class _AnswerListState extends State<AnswerList> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
-          .collection('QnAanswer').orderBy('add_datetime',descending: true).snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if(snapshot.connectionState==ConnectionState.waiting){
-          return const CircularProgressIndicator(color: Colors.white,);
-        }
-        final answerDocs = snapshot!.data.docs;
-        return ListView.builder(
-          itemCount: answerDocs.length,
-          itemBuilder: (BuildContext context, int index) {
-            print(answerDocs[index]['question']);
-            return AnswerListCard(
-              question: answerDocs[index]['question'],
-              userName: answerDocs[index]['userName'],
-              answer: answerDocs[index]['answer'],
-              addDateTime: answerDocs[index]['add_datetime'].toDate(),
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 50,
+              child: TextButton(
+                  onPressed: (){},
+                  child: Text('전체',style: TextStyle(color: Colors.white),)
+              ),
+            ),
+            Container(
+              height: 50,
+              child: TextButton(
+                  onPressed: (){},
+                  child: Text('가치관',style: TextStyle(color: Colors.white))
+              ),
+            ),
+            Container(
+              height: 50,
+              child: TextButton(
+                  onPressed: (){},
+                  child: Text('추억',style: TextStyle(color: Colors.white))
+              ),
+            ),
+            Container(
+              height: 50,
+              child: TextButton(
+                  onPressed: (){},
+                  child: Text('성생활',style: TextStyle(color: Colors.white))
+              ),
+            ),
+            TextButton(
+                onPressed: (){},
+                child: Text('애인의\n모든것',style: TextStyle(color: Colors.white))
+            ),
+          ],
+        ),
+        StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
+              .collection('QnAanswer').orderBy('add_datetime',descending: true).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if(snapshot.connectionState==ConnectionState.waiting){
+              return const CircularProgressIndicator(color: Colors.white,);
+            }
+            final answerDocs = snapshot!.data.docs;
+            return Expanded(
+              child: ListView.builder(
+                itemCount: answerDocs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  print(answerDocs[index]['question']);
+                  return AnswerListCard(
+                    question: answerDocs[index]['question'],
+                    userName: answerDocs[index]['userName'],
+                    answer: answerDocs[index]['answer'],
+                    addDateTime: answerDocs[index]['add_datetime'].toDate(),
+                  );
+                },
+              ),
             );
           },
-        );
-      },
+        ),
+      ],
     );
   }
 }

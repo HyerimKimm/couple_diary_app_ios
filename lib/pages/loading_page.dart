@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:couple_diary_app/pages/login_page.dart';
 import 'package:couple_diary_app/pages/main_page.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:transition/transition.dart';
 import '../user_info/logged_user_info.dart';

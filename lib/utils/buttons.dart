@@ -100,18 +100,3 @@ class SettingsButton extends StatelessWidget {
     );
   }
 }
-
-class QuestionDesignButton extends StatelessWidget {
-  const QuestionDesignButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-
-      ],
-    );
-  }
-}
-

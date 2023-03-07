@@ -154,7 +154,7 @@ class _CoupleDdayState extends State<CoupleDday> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('D+${nowDate.difference(widget.startDate!).inDays}',
+              Text('D+${nowDate.difference(widget.startDate!).inDays+1}',
                 style: TextStyle(color:Colors.white, fontSize: 25),
               ),
               Text('처음 만난 날 : ${DateFormat('yyyy-MM-dd').format(widget.startDate!)}',
