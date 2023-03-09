@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:couple_diary_app/utils/buttons.dart';
+import 'package:couple_diary_app/user_info/Category.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AnswerList extends StatefulWidget {
   final String coupleId;
@@ -17,58 +16,141 @@ class AnswerList extends StatefulWidget {
 class _AnswerListState extends State<AnswerList> {
   @override
   Widget build(BuildContext context) {
+    String category = Provider.of<Category>(context).category;
+
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 50,
-              child: TextButton(
-                  onPressed: (){},
-                  child: Text('전체',style: TextStyle(color: Colors.white),)
+
+        Padding(
+          padding: const EdgeInsets.only(top:8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 45,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: category==''?Colors.white:Color.fromRGBO(255, 255, 255, 0),
+                      shape: StadiumBorder(),
+                      side: BorderSide(
+                        color: category==''?Colors.blue:Color.fromRGBO(90, 90, 90, 0)
+                      )
+                    ),
+                    onPressed: (){
+                      Provider.of<Category>(context,listen: false).changeCategory('');
+                    },
+                    child: Text('전체',
+                      style: category==''?TextStyle(color: Color.fromRGBO(90, 90, 90, 1))
+                              :TextStyle(color: Colors.white),
+                    )
+                ),
               ),
-            ),
-            Container(
-              height: 50,
-              child: TextButton(
-                  onPressed: (){},
-                  child: Text('가치관',style: TextStyle(color: Colors.white))
+              Container(
+                height: 45,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: category=='가치관'?Colors.white:Color.fromRGBO(255, 255, 255, 0),
+                    shape: StadiumBorder(),
+                    side: BorderSide(
+                          color: category=='가치관'?Colors.blue:Color.fromRGBO(90, 90, 90, 0)
+                    )
+                  ),
+                    onPressed: (){
+                      Provider.of<Category>(context,listen: false).changeCategory('가치관');
+                    },
+                    child: Text('가치관',
+                        style: category=='가치관'?TextStyle(color: Color.fromRGBO(90, 90, 90, 1))
+                                :TextStyle(color: Colors.white)
+                    )
+                ),
               ),
-            ),
-            Container(
-              height: 50,
-              child: TextButton(
-                  onPressed: (){},
-                  child: Text('추억',style: TextStyle(color: Colors.white))
+              Container(
+                height: 45,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: category=='추억'?Colors.white:Color.fromRGBO(255, 255, 255, 0),
+                      shape: StadiumBorder(),
+                      side: BorderSide(
+                            color: category=='추억'?Colors.blue:Color.fromRGBO(90, 90, 90, 0)
+                      )
+                    ),
+                    onPressed: (){
+                      Provider.of<Category>(context,listen: false).changeCategory('추억');
+                    },
+                    child: Text('추억',
+                        style: category=='추억'?TextStyle(color: Color.fromRGBO(90, 90, 90, 1))
+                            :TextStyle(color: Colors.white))
+                ),
               ),
-            ),
-            Container(
-              height: 50,
-              child: TextButton(
-                  onPressed: (){},
-                  child: Text('성생활',style: TextStyle(color: Colors.white))
+              Container(
+                height: 45,
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: category=='성생활'?Colors.white:Color.fromRGBO(255, 255, 255, 0),
+                      shape: StadiumBorder(),
+                      side: BorderSide(
+                            color: category=='성생활'?Colors.blue:Color.fromRGBO(90, 90, 90, 0)
+                      )
+                    ),
+                    onPressed: (){
+                      Provider.of<Category>(context,listen: false).changeCategory('성생활');
+                    },
+                    child: Text('성생활',
+                        style: category=='성생활'?TextStyle(color: Color.fromRGBO(90, 90, 90, 1))
+                            :TextStyle(color: Colors.white))
+                ),
               ),
-            ),
-            TextButton(
-                onPressed: (){},
-                child: Text('애인의\n모든것',style: TextStyle(color: Colors.white))
-            ),
-          ],
+              Container(
+                height: 50,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: category=='애인의 모든것'?Colors.white:Color.fromRGBO(255, 255, 255, 0),
+                    shape: StadiumBorder(),
+                    side: BorderSide(
+                          color: category=='애인의 모든것'?Colors.blue:Color.fromRGBO(90, 90, 90, 0)
+                    )
+                  ),
+                    onPressed: (){
+                      Provider.of<Category>(context,listen: false).changeCategory('애인의 모든것');
+                    },
+                    child: Text('애인의\n모든것',
+                        style: category=='애인의 모든것'?TextStyle(color: Color.fromRGBO(90, 90, 90, 1),fontSize: 12)
+                            :TextStyle(color: Colors.white, fontSize: 12))
+                ),
+              ),
+            ],
+          ),
         ),
         StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
-              .collection('QnAanswer').orderBy('add_datetime',descending: true).snapshots(),
+          stream:
+            category!=''?
+              FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
+                .collection('QnAanswer').where('category',isEqualTo: category).snapshots() 
+              :FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
+                .collection('QnAanswer').snapshots(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if(snapshot.connectionState==ConnectionState.waiting){
               return const CircularProgressIndicator(color: Colors.white,);
             }
+
             final answerDocs = snapshot!.data.docs;
+            if(answerDocs.length==0){
+              return const Padding(
+                padding:  EdgeInsets.all(16.0),
+                child: Text('등록된 문답이 없습니다!',
+                  style: TextStyle(
+                    color: Color.fromRGBO(80, 80, 80, 1),
+                    fontSize: 20,
+                    fontFamily: 'GangwonEduBold',
+                  ),
+                ),
+              );
+            }
             return Expanded(
               child: ListView.builder(
                 itemCount: answerDocs.length,
                 itemBuilder: (BuildContext context, int index) {
-                  print(answerDocs[index]['question']);
                   return AnswerListCard(
                     question: answerDocs[index]['question'],
                     userName: answerDocs[index]['userName'],
@@ -104,7 +186,7 @@ class AnswerListCard extends StatelessWidget {
         elevation: 3.0,
         child: SizedBox(
           width: MediaQuery.of(context).size.width*0.9,
-          height: 130,
+          height: 180,
           child: Column(
             children: [
               Padding(

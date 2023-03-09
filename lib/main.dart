@@ -9,11 +9,13 @@ import 'package:couple_diary_app/pages/notice_page.dart';
 import 'package:couple_diary_app/pages/post.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
+import 'package:couple_diary_app/user_info/Category.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'couple_info/answer_list.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 
@@ -45,6 +47,9 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(
             create: (value)=>LoggedUserInfo()
+        ),
+        ChangeNotifierProvider(
+            create: (value)=>Category()
         ),
       ],
       child: MaterialApp(

@@ -112,7 +112,6 @@ class _QuestionState extends State<Question> {
                 ],
               ),
               SizedBox(height: 50,)
-
             ],
           );
         },
