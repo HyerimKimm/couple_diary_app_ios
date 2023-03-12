@@ -9,7 +9,7 @@ import 'package:couple_diary_app/pages/notice_page.dart';
 import 'package:couple_diary_app/pages/post.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
-import 'package:couple_diary_app/user_info/Category.dart';
+import 'package:couple_diary_app/user_info/category.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';

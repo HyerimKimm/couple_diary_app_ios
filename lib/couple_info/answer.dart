@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 
 class Answer extends StatefulWidget {
   final String question;
+  final String category;
   final String coupleId;
   final String userId;
   final String userName;
 
-  Answer({Key? key, required this.question, required this.coupleId, required this.userId, required this.userName}) : super(key: key);
+  Answer({Key? key, required this.question, required this.coupleId, required this.userId, required this.userName, required this.category}) : super(key: key);
 
   @override
   State<Answer> createState() => _AnswerState();
@@ -29,6 +30,7 @@ class _AnswerState extends State<Answer> {
             'userId':widget.userId,
             'userName':widget.userName,
             'question':widget.question,
+            'category':widget.category,
             'answer':answer,
             'add_datetime':Timestamp.now(),
           }).then((value) {

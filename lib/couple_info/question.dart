@@ -29,7 +29,8 @@ class _QuestionState extends State<Question> {
           if(snapshot.connectionState==ConnectionState.waiting) return Text('');
           final snapshotDocs = snapshot.data!.docs;
           randomIndex = (randomIndex==0)?Random().nextInt(snapshotDocs.length):randomIndex;
-          String data = snapshotDocs[randomIndex]['question'];
+          String question = snapshotDocs[randomIndex]['question'];
+          String category = snapshotDocs[randomIndex]['category'];
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -39,7 +40,7 @@ class _QuestionState extends State<Question> {
                   height: 100,
                   child: Center(
                       child: Text(
-                        '${data}',
+                        '${question}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 23,
@@ -61,7 +62,7 @@ class _QuestionState extends State<Question> {
                     ),
                     onPressed: (){
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Post(question: data,))
+                          MaterialPageRoute(builder: (context) => Post(question: question,category: category,))
                       );
                     },
                     icon: const Icon(

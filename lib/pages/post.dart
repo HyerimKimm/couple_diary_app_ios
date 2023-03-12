@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 
 class Post extends StatefulWidget {
   final String question;
+  final String category;
 
-  Post({Key? key, required this.question}) : super(key: key);
+  Post({Key? key, required this.question, required this.category}) : super(key: key);
 
   @override
   State<Post> createState() => _PostState();
@@ -15,7 +16,6 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
-
     final String userId = Provider.of<LoggedUserInfo>(context).userUid;
     final String userName = Provider.of<LoggedUserInfo>(context).userName;
     final String coupleId = Provider.of<LoggedUserInfo>(context).coupleId;
@@ -38,7 +38,7 @@ class _PostState extends State<Post> {
           ),
           child: Column(
             children: [
-              Answer(question: widget.question, coupleId: coupleId, userId: userId, userName: userName,)
+              Answer(question: widget.question, category: widget.category, coupleId: coupleId, userId: userId, userName: userName,)
             ],
           ),
         ),
