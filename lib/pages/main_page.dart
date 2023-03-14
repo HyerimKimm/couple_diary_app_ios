@@ -80,7 +80,7 @@ class _MainPageState extends State<MainPage> {
   Widget bodyWidgetReturn(){
     return coupleState=='none'?SearchMyCouple()
         :coupleState=='couple'?CoupleUser(startDate: coupleStartDate,coupleID: coupleId,userUid: loggedUserUid, coupleUserUid: coupleUserUid,)
-        :senderOrReceiver=='sender'?CoupleSenderUser()
+        :senderOrReceiver=='sender'?CoupleSenderUser(coupleId:coupleId,)
         :CoupleReceiverUser(coupleId: coupleId,coupleUserUid: coupleUserUid,);
   }
 
@@ -101,14 +101,14 @@ class _MainPageState extends State<MainPage> {
     getCurrentUser();
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: const Size.fromHeight(60),
         child: AppBar(
-          backgroundColor : Color.fromRGBO(0, 0, 0, 0),
+          backgroundColor : const Color.fromRGBO(0, 0, 0, 0),
           elevation: 0,
           centerTitle: false,
           title: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('${loggedUserName}님, 안녕하세요🫠', style: TextStyle(color: Colors.black,),),
+            child: Text('${loggedUserName}님, 안녕하세요🫠', style: const TextStyle(color: Colors.black,),),
           ),
         ),
       ),
@@ -123,7 +123,7 @@ class _MainPageState extends State<MainPage> {
             ):Container(height: 50,),
             Expanded(
                 child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         image: DecorationImage(
                             fit:BoxFit.fill,
                             image: AssetImage('assets/images/demian.jpeg')
@@ -271,22 +271,20 @@ class CoupleUser extends StatefulWidget {
 class _CoupleUserState extends State<CoupleUser> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SizedBox(height: 20,),
-          DDay(
-            coupleId: widget.coupleID,
-            startDate:widget.startDate,
-            width: MediaQuery.of(context).size.width*0.8,
-            height: 80,
-          ),
-          SizedBox(height: 20,),
-          CoupleProfileDesign(userId: widget.userUid, coupleUserId: widget.coupleUserUid,),
-          Expanded(child: Question()),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        const SizedBox(height: 20,),
+        DDay(
+          coupleId: widget.coupleID,
+          startDate:widget.startDate,
+          width: MediaQuery.of(context).size.width*0.8,
+          height: 80,
+        ),
+        const SizedBox(height: 20,),
+        CoupleProfileDesign(userId: widget.userUid, coupleUserId: widget.coupleUserUid,),
+        Expanded(child: Question()),
+      ],
     );
   }
 }
@@ -397,7 +395,9 @@ class _CoupleReceiverUserState extends State<CoupleReceiverUser> {
 
 //커플 신청을 한 유저의 화면
 class CoupleSenderUser extends StatefulWidget {
-  const CoupleSenderUser({Key? key}) : super(key: key);
+  String coupleId;
+
+  CoupleSenderUser({Key? key, required this.coupleId}) : super(key: key);
 
   @override
   State<CoupleSenderUser> createState() => _CoupleSenderUserState();
@@ -406,13 +406,41 @@ class _CoupleSenderUserState extends State<CoupleSenderUser> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        '커플 수락 대기중입니다.',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontFamily: 'GangwonEduBold'
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            '커플 수락 대기중입니다.',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontFamily: 'GangwonEduBold'
+            ),
+          ),
+          SizedBox(height: 10,),
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Color.fromRGBO(255, 255, 255, 0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
+              onPressed: () async {
+                await FirebaseFirestore.instance.collection('couple').doc(widget.coupleId).delete().then((value){
+                  Provider.of<LoggedUserInfo>(context, listen: false).getUserInfo();
+                  showSnackBar(context, '커플 등록이 취소되었습니다!');
+                });
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text('신청 취소하기',
+                  style: TextStyle(
+                      color: Colors.white
+                  ),
+                ),
+              ),
+          )
+        ],
       ),
     );
   }

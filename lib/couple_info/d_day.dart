@@ -45,7 +45,7 @@ class _DDayState extends State<DDay> {
             ),
           ],
         ),
-        child: widget.startDate==null?NoCoupleDday(coupleId: widget.coupleId,) :CoupleDday(startDate: widget.startDate,),
+        child: widget.startDate==null?NoCoupleDday(coupleId: widget.coupleId,) :CoupleDday(coupleId:widget.coupleId, startDate: widget.startDate,),
       ),
     );
   }
@@ -135,7 +135,8 @@ class _NoCoupleDdayState extends State<NoCoupleDday> {
 
 //Dday값이 있을 경우 출력하는 위젯
 class CoupleDday extends StatefulWidget {
-  CoupleDday({Key? key, required this.startDate}) : super(key: key);
+  CoupleDday({Key? key, required this.coupleId, required this.startDate}) : super(key: key);
+  String coupleId;
   DateTime? startDate;
 
   @override
@@ -166,7 +167,17 @@ class _CoupleDdayState extends State<CoupleDday> {
           width: MediaQuery.of(context).size.width*0.15,
           child: IconButton(
               color: Colors.white,
-              onPressed: (){},
+              onPressed: (){
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      backgroundColor: Color.fromRGBO(255, 255, 255, 0.5),
+                      content : NoCoupleDday(coupleId: widget.coupleId,)
+                    );
+                  }
+                );
+              },
               icon: Icon(Icons.edit)
           ),
         ),
