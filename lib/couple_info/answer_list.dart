@@ -126,9 +126,9 @@ class _AnswerListState extends State<AnswerList> {
           stream:
             category!=''?
               FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
-                .collection('QnAanswer').where('category',isEqualTo: category).snapshots() 
+                .collection('QnAanswer').where('category',isEqualTo: category).orderBy('add_datetime',descending: true).snapshots()
               :FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
-                .collection('QnAanswer').snapshots(),
+                .collection('QnAanswer').orderBy('add_datetime',descending: true).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if(snapshot.connectionState==ConnectionState.waiting){
               return const CircularProgressIndicator(color: Colors.white,);

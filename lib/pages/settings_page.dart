@@ -9,6 +9,7 @@ import 'package:transition/transition.dart';
 import '../utils/buttons.dart';
 import 'chattingroom_page.dart';
 import 'list_page.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -53,13 +54,15 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingsButton(
                 text: '문의하기',
                 width: MediaQuery.of(context).size.width,
-                onPressed: (){},
+                onPressed: (){
+                  _sendEmail();
+                },
               ),
               SettingsButton(
                 text: '로그아웃',
                 width: MediaQuery.of(context).size.width,
                 onPressed: (){
-                  signOut();
+                  _signOut();
                 },
               ),
             ]
@@ -146,7 +149,25 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void signOut() async{
+  void _sendEmail() async{
+    final Email email = Email(
+      body: '',
+      subject: '[커플문답 앱 문의]',
+      recipients: ['helim01033@naver.com'],
+      cc: [],
+      bcc: [],
+      attachmentPaths: [],
+      isHTML: false,
+    );
+
+    try{
+      await FlutterEmailSender.send(email);
+    }catch(e){
+      print(e);
+    }
+  }
+
+  void _signOut() async{
     try{
       await _authentication.signOut();
       if(_authentication.currentUser==null){

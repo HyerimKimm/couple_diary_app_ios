@@ -50,6 +50,7 @@ dependencies:
   google_mobile_ads: ^2.3.0
   intl: ^0.17.0
   date_field: ^3.0.0
+  flutter_email_sender: ^5.2.0
 
 dev_dependencies:
   flutter_test:

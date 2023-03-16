@@ -192,16 +192,14 @@ class ChatWidget extends StatefulWidget {
 class _ChatWidgetState extends State<ChatWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child:Column(
-        children: [
-          Expanded(
-            child: Messages(),
-          ),
-          NewMessage(),
-        ],
-      ),
-    );;
+    return Column(
+      children: [
+        Expanded(
+          child: Messages(),
+        ),
+        NewMessage(),
+      ],
+    );
   }
 }
 

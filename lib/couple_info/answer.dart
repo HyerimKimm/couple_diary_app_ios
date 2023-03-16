@@ -74,7 +74,6 @@ class _AnswerState extends State<Answer> {
                   disabledBorder: InputBorder.none,
                   errorStyle: TextStyle(
                     color: Color.fromRGBO(255, 150, 210, 1),
-
                   ),
                   contentPadding: EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                 )
