@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,9 +43,19 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAOu8VlufjV4tbQRKR9h1SXD_hCIgzNdQ8',
+    appId: '1:243961147976:web:3d52be5ece29869cb01e7d',
+    messagingSenderId: '243961147976',
+    projectId: 'couplediaryapp-fb3c8',
+    authDomain: 'couplediaryapp-fb3c8.firebaseapp.com',
+    storageBucket: 'couplediaryapp-fb3c8.appspot.com',
+    measurementId: 'G-3NG202Y3SQ',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAVRvs4XeHhhlUHLgcrI6o2smdbIBvoIHE',
-    appId: '1:243961147976:android:85e213ece0cc119bb01e7d',
+    appId: '1:243961147976:android:ad755b9a71bb22a6b01e7d',
     messagingSenderId: '243961147976',
     projectId: 'couplediaryapp-fb3c8',
     storageBucket: 'couplediaryapp-fb3c8.appspot.com',
@@ -59,7 +63,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBovPbXxFTsj9PYZwW_-y0UAaS6XqEF2-0',
-    appId: '1:243961147976:ios:f9a4709f488ac401b01e7d',
+    appId: '1:243961147976:ios:39552596de9b0ad6b01e7d',
+    messagingSenderId: '243961147976',
+    projectId: 'couplediaryapp-fb3c8',
+    storageBucket: 'couplediaryapp-fb3c8.appspot.com',
+    iosClientId: '243961147976-7oalmmlipuetdk6vbdaqrp6njr4us7ib.apps.googleusercontent.com',
+    iosBundleId: 'com.example.hyerimcoupleqna230317',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBovPbXxFTsj9PYZwW_-y0UAaS6XqEF2-0',
+    appId: '1:243961147976:ios:45b791d81ac3cbecb01e7d',
     messagingSenderId: '243961147976',
     projectId: 'couplediaryapp-fb3c8',
     storageBucket: 'couplediaryapp-fb3c8.appspot.com',
