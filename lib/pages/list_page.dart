@@ -84,13 +84,13 @@ class _ListPageState extends State<ListPage> {
             child: AdWidget(ad: _bannerAd!),
           ):Container(
             height: 50,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color.fromRGBO(123, 191, 239, 1),
             ),
           ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color.fromRGBO(123, 191, 239, 1),
               ),
               child: AnswerList(coupleId: coupleId,),

@@ -133,7 +133,6 @@ class _AnswerListState extends State<AnswerList> {
             if(snapshot.connectionState==ConnectionState.waiting){
               return const CircularProgressIndicator(color: Colors.white,);
             }
-
             final answerDocs = snapshot!.data.docs;
             if(answerDocs.length==0){
               return const Padding(

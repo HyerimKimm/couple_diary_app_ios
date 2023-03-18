@@ -20,7 +20,7 @@ class _MessagesState extends State<Messages> {
     ScrollController scrollController = ScrollController();
     scrollController.addListener(() {
       if(scrollController.position.pixels==scrollController.position.maxScrollExtent){
-
+        print("scroll end");
       }
     });
 
@@ -36,23 +36,18 @@ class _MessagesState extends State<Messages> {
             return Container();
           }
           final chatDocs = snapshot.data!.docs;
-          return RefreshIndicator(
-            onRefresh: ()=>_refresh().then((value) =>
-              showSnackBar(context, '로딩완료!')
-            ),
-            child: ListView.builder(
-              controller: scrollController,
-              reverse: true,
-              itemCount: chatDocs.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ChatBubbles(
-                    message: '${chatDocs[index]['text']}',
-                    isMe: chatDocs[index]['senderUid']==userId?true:false,
-                    userId: chatDocs[index]['senderUid'],
-                    addDatetime: chatDocs[index]['addDatetime'].toDate(),
-                );
-              },
-            ),
+          return ListView.builder(
+            controller: scrollController,
+            reverse: true,
+            itemCount: chatDocs.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ChatBubbles(
+                  message: '${chatDocs[index]['text']}',
+                  isMe: chatDocs[index]['senderUid']==userId?true:false,
+                  userId: chatDocs[index]['senderUid'],
+                  addDatetime: chatDocs[index]['addDatetime'].toDate(),
+              );
+            },
           );
         },
       ),
