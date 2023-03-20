@@ -20,7 +20,6 @@ class _AnswerListState extends State<AnswerList> {
 
     return Column(
       children: [
-
         Padding(
           padding: const EdgeInsets.only(top:8.0),
           child: Row(
@@ -126,7 +125,7 @@ class _AnswerListState extends State<AnswerList> {
           stream:
             category!=''?
               FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
-                .collection('QnAanswer').where('category',isEqualTo: category).orderBy('add_datetime',descending: true).snapshots()
+                .collection('QnAanswer').where("category",isEqualTo:category).orderBy('add_datetime',descending: true).snapshots()
               :FirebaseFirestore.instance.collection('couple').doc(widget.coupleId)
                 .collection('QnAanswer').orderBy('add_datetime',descending: true).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
