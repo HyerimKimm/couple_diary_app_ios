@@ -34,8 +34,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
     final imagePicker = ImagePicker();
     final pickedImageFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: 50,
-        maxHeight: 150,
+        imageQuality: 100,
+        maxHeight: 300,
     );
     setState(() {
       if(pickedImageFile != null){

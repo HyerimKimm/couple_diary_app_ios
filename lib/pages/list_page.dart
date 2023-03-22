@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
+import 'package:couple_diary_app/user_info/category.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -108,6 +109,7 @@ class _ListPageState extends State<ListPage> {
           selectedFontSize: 10,
           currentIndex: 1,
           onTap: (index){
+            Provider.of<Category>(context,listen: false).changeCategory('');
             switch(index){
               case 0:
                 Navigator.pushReplacement(context,
