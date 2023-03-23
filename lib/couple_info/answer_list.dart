@@ -155,7 +155,9 @@ class _AnswerListState extends State<AnswerList> {
                     userName: answerDocs[index]['userName'],
                     answer: answerDocs[index]['answer'],
                     addDateTime: answerDocs[index]['add_datetime'].toDate(),
-                    index: index,
+                    index: index, 
+                    coupleId: widget.coupleId,
+                    qnaDocId: answerDocs[index].id,
                   );
                 },
               ),
@@ -169,11 +171,13 @@ class _AnswerListState extends State<AnswerList> {
 
 class AnswerListCard extends StatelessWidget {
   final int index;
+  final String coupleId;
   final String question;
   final String answer;
+  final String qnaDocId;
   final String userName;
   final DateTime? addDateTime;
-  const AnswerListCard({Key? key, required this.question, required this.userName, required this.answer, required this.addDateTime, required this.index}) : super(key: key);
+  const AnswerListCard({Key? key, required this.question, required this.userName, required this.answer, required this.addDateTime, required this.index, required this.coupleId, required this.qnaDocId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,20 +187,11 @@ class AnswerListCard extends StatelessWidget {
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            // An action can be bigger than the others.
-            flex: 1,
-            onPressed: editAnswer,
-            backgroundColor: Color(0xFF0392CF),
-            foregroundColor: Colors.white,
-            icon: Icons.edit,
-            label: '수정',
-          ),
-          SlidableAction(
             onPressed: deleteAnswer,
             backgroundColor: Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            label: '삭제',
+            label: '삭제하기',
           ),
         ],
       ),
@@ -271,11 +266,10 @@ class AnswerListCard extends StatelessWidget {
     );
   }
 
-  void editAnswer(BuildContext context){
-    print("edit ${index}");
-  }
-
-  void deleteAnswer(BuildContext context){
-    print("delete ${index}");
+  void deleteAnswer(BuildContext context) async {
+    print('coupleId : ${coupleId}');
+    print('qnaDocId : ${qnaDocId}');
+    FirebaseFirestore.instance.collection('couple').doc(coupleId)
+        .collection('QnAanswer').doc(qnaDocId).delete();
   }
 }

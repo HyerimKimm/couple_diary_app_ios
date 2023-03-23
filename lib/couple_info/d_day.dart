@@ -4,7 +4,6 @@ import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class DDay extends StatefulWidget {
@@ -23,8 +22,6 @@ class DDay extends StatefulWidget {
 }
 
 class _DDayState extends State<DDay> {
-  var logger = Logger(printer:PrettyPrinter());
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -112,7 +109,6 @@ class _NoCoupleDdayState extends State<NoCoupleDday> {
             child: IconButton(
                 color: Colors.white,
                 onPressed: (){
-                  var logger = Logger(printer: PrettyPrinter());
                   _tryValidation();
                   if(selectedDate==null){
                     showSnackBar(context, '날짜를 선택하세요.');

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 class LoggedUserInfo with ChangeNotifier{
-  var logger = Logger(printer: PrettyPrinter());
   final _authentication = FirebaseAuth.instance;
   String userUid='';
   String userName='';
@@ -78,5 +76,13 @@ class LoggedUserInfo with ChangeNotifier{
         notifyListeners();
       });
     }
+  }
+
+  void deleteUser(){
+    FirebaseFirestore.instance.collection('coupleChat').doc(coupleChatUid).delete();
+    FirebaseFirestore.instance.collection('couple').doc(coupleId).delete();
+    FirebaseFirestore.instance.collection('user').doc(userUid).delete();
+    _authentication.currentUser!.delete();
+    notifyListeners();
   }
 }

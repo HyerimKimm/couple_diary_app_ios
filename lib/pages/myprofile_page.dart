@@ -71,7 +71,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               loggedUserName = snapshot.data['name'].toString();
               loggedUserProfileUrl = snapshot.data['profileUrl'];
-
               return Form(
                 key: _formKey,
                 child: Column(
@@ -189,7 +188,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         ),//이메일
                       ],
                     ),
-                    SizedBox(height: 25,),
+                    const SizedBox(height: 25,),
                     Buttons(
                       text: Text('수정하기'),
                       onPressed: () async {
@@ -205,11 +204,94 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           await FirebaseFirestore.instance.collection('user').doc(loggedUserUid).set({
                             'name': loggedUserName,},SetOptions(merge: true));
                           showSnackBar(context, '수정되었습니다 💞');
-                          Provider.of<LoggedUserInfo>(context).getUserInfo();
+                          Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
                         }
                       },
                       width: 300,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          primary: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          )
+                        ),
+                        onPressed: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return AlertDialog(
+                                  content: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(top:1.0, bottom: 16.0),
+                                          child: Text('회원 탈퇴',
+                                            style: TextStyle(
+                                                color: Color.fromRGBO(123, 191, 239, 1),
+                                                fontFamily: 'GmarketSansMedium',
+                                                fontSize: 20,
+                                            )
+                                          ),
+                                        ),
+                                        const Text('회원 탈퇴하시겠습니까? 🥲'),
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              TextButton(
+                                                  style:TextButton.styleFrom(
+                                                    minimumSize: Size(100,50),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20)
+                                                    )
+                                                  ),
+                                                  onPressed: (){
+                                                    Provider.of<LoggedUserInfo>(context,listen: false).deleteUser();
+                                                  },
+                                                  child: const Text('네',
+                                                      style: TextStyle(
+                                                      color: Colors.blue,
+                                                      fontSize: 16
+                                                  ),)
+                                              ),
+                                              TextButton(
+                                                  style:TextButton.styleFrom(
+                                                      minimumSize: Size(100,50),
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(20)
+                                                      )
+                                                  ),
+                                                  onPressed: (){
+                                                    Navigator.pop(context,'Cancel');
+                                                  },
+                                                  child: const Text('아니요',
+                                                    style: TextStyle(
+                                                        color: Colors.red,
+                                                      fontSize: 16
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ),
+                                );
+                              },
+                          );
+                        },
+                        child: const Text('회원 탈퇴하기',
+                          style: TextStyle(
+                              color: Colors.red),
+                        )
+                      ),
+                    )
                   ],
                 ),
               );

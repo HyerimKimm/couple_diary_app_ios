@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:math';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
