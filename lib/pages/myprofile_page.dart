@@ -4,10 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:transition/transition.dart';
 import '../utils/buttons.dart';
 import '../utils/snackBar.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+
+import 'login_page.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfilePageState extends State<MyProfilePage> {
   final _formKey = GlobalKey<FormState>();
   String loggedUserUid='';
+  String loggedUserPassword='';
   String loggedUserEmail='';
   String loggedUserName='';
   String loggedUserProfileUrl='';
@@ -47,6 +51,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   void getCurrentUser(){
     loggedUserUid = Provider.of<LoggedUserInfo>(context).userUid;
+    loggedUserPassword = Provider.of<LoggedUserInfo>(context).userPassword;
     loggedUserName = Provider.of<LoggedUserInfo>(context).userName;
     loggedUserEmail = Provider.of<LoggedUserInfo>(context).userEmail;
     loggedUserProfileUrl = Provider.of<LoggedUserInfo>(context).userProfileUrl;
@@ -253,16 +258,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                   ),
                                                   onPressed: () async {
                                                     try {
-                                                      User user = FirebaseAuth.instance.currentUser!;
-                                                      // Firebase 에서 해당 사용자 정보 및 인증정보 삭제
-                                                      await user.delete();
-                                                      Provider.of<LoggedUserInfo>(context,listen:false).getUserInfo();
-                                                      Navigator.pop(context,'OK');
-                                                      Navigator.of(context).pop();
-                                                      Navigator.of(context).pushReplacementNamed('/loading');
-                                                    } catch (e) {
-                                                      // 탈퇴 실패 시 처리
-                                                      print("탈퇴 실패: ${e.toString()}");
+
+                                                    } catch(e){
+                                                      print(e);
                                                     }
                                                   },
                                                   child: const Text('네',

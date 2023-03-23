@@ -17,6 +17,7 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
+    Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
     Timer(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,

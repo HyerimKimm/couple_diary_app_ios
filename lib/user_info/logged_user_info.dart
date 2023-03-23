@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class LoggedUserInfo with ChangeNotifier{
   final _authentication = FirebaseAuth.instance;
   String userUid='';
+  String userPassword='';
   String userName='';
   String userEmail='';
   String userProfileUrl='';
@@ -26,9 +27,12 @@ class LoggedUserInfo with ChangeNotifier{
       //user collection 데이터 조회
       var documentSnapshot = FirebaseFirestore.instance.collection('user').doc(userUid).get()
           .then((value){
+        userPassword = value.get('password');
         userName = value.get('name');
         userEmail = value.get('email');
         userProfileUrl = value.get('profileUrl');
+
+        print('userPassword : ${userPassword}');
 
         //couple collection - 로그인한 user가 sender일 경우의 데이터 조회
         var coupleSnapshot = FirebaseFirestore.instance.collection('couple').where('senderUid',isEqualTo: userUid).get()
