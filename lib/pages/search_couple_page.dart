@@ -93,7 +93,6 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                       onPressed: (){
                         _tryValidation();
                         setState(() {
-
                         });
                       },
                       icon: const Icon(
@@ -110,6 +109,15 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
               stream: searchedUser.where("email",isEqualTo: searchInputData).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if(snapshot.hasData){
+                  if(snapshot.data!.size==0){
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: searchInputData!=''?
+                        Text('검색 결과가 없습니다!',
+                         style: TextStyle(fontSize: 20, color: Colors.grey, fontFamily: 'GangwonEduBold'),
+                        ) : Container(),
+                    );
+                  }
                   return Expanded(
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width*0.8,
@@ -131,7 +139,7 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                       width:65,
                                       child: CircleAvatar(
                                         radius: 40,
-                                        backgroundColor: Color.fromRGBO(123, 191, 239, 1),
+                                        backgroundColor: const Color.fromRGBO(123, 191, 239, 1),
                                         backgroundImage: NetworkImage(documentSnapshot['profileUrl']),
                                       ),
                                     ),
@@ -147,12 +155,17 @@ class _SearchCouplePageState extends State<SearchCouplePage> {
                                             senderUid = user!.uid;
                                             receiverUid = documentSnapshot.id.toString();
 
-                                            if(senderUid!='' && receiverUid!='') {
+                                            if(senderUid==receiverUid){
+                                              showSnackBar(context, '본인은 등록할 수 없습니다!');
+                                              return;
+                                            }
+
+                                            if(senderUid!='' && receiverUid!='' && senderUid!=receiverUid) {
                                               _addCouple(senderUid, receiverUid);
                                               Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
                                             }
                                           },
-                                        icon: Icon(Icons.add),
+                                        icon: const Icon(Icons.add),
                                         ),
                                       )
                                     ],

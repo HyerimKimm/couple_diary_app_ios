@@ -77,12 +77,4 @@ class LoggedUserInfo with ChangeNotifier{
       });
     }
   }
-
-  void deleteUser(){
-    FirebaseFirestore.instance.collection('coupleChat').doc(coupleChatUid).delete();
-    FirebaseFirestore.instance.collection('couple').doc(coupleId).delete();
-    FirebaseFirestore.instance.collection('user').doc(userUid).delete();
-    _authentication.currentUser!.delete();
-    notifyListeners();
-  }
 }

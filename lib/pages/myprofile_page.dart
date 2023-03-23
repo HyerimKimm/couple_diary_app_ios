@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -245,13 +246,24 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                             children: [
                                               TextButton(
                                                   style:TextButton.styleFrom(
-                                                    minimumSize: Size(100,50),
+                                                    minimumSize: const Size(100,50),
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(20)
                                                     )
                                                   ),
-                                                  onPressed: (){
-                                                    Provider.of<LoggedUserInfo>(context,listen: false).deleteUser();
+                                                  onPressed: () async {
+                                                    try {
+                                                      User user = FirebaseAuth.instance.currentUser!;
+                                                      // Firebase 에서 해당 사용자 정보 및 인증정보 삭제
+                                                      await user.delete();
+                                                      Provider.of<LoggedUserInfo>(context,listen:false).getUserInfo();
+                                                      Navigator.pop(context,'OK');
+                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context).pushReplacementNamed('/loading');
+                                                    } catch (e) {
+                                                      // 탈퇴 실패 시 처리
+                                                      print("탈퇴 실패: ${e.toString()}");
+                                                    }
                                                   },
                                                   child: const Text('네',
                                                       style: TextStyle(
