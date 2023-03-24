@@ -21,6 +21,18 @@ class LoggedUserInfo with ChangeNotifier{
   }
 
   void getUserInfo(){
+    userUid='';
+    userPassword='';
+    userName='';
+    userEmail='';
+    userProfileUrl='';
+    coupleId='';
+    senderOrReceiver='';
+    coupleState='none';
+    coupleUserUid='';
+    coupleStartDate=null;
+    coupleChatUid='';
+
     if(_authentication.currentUser!=null){
       userUid = _authentication.currentUser!.uid;
 

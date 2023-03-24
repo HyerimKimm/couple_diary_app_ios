@@ -9,7 +9,6 @@ import '../utils/buttons.dart';
 import '../utils/snackBar.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'login_page.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -26,6 +25,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
   String loggedUserEmail='';
   String loggedUserName='';
   String loggedUserProfileUrl='';
+  String coupleId='';
+  String coupleChatId='';
   File? pickedImage;
 
   void _tryValidation(){
@@ -55,6 +56,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
     loggedUserName = Provider.of<LoggedUserInfo>(context).userName;
     loggedUserEmail = Provider.of<LoggedUserInfo>(context).userEmail;
     loggedUserProfileUrl = Provider.of<LoggedUserInfo>(context).userProfileUrl;
+    coupleId = Provider.of<LoggedUserInfo>(context).coupleId;
+    coupleChatId = Provider.of<LoggedUserInfo>(context).coupleChatUid;
   }
 
   @override
@@ -72,12 +75,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: SingleChildScrollView(
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('user').doc(loggedUserUid).snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              loggedUserName = snapshot.data['name'].toString();
-              loggedUserProfileUrl = snapshot.data['profileUrl'];
-              return Form(
+          child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,7 +94,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                       CircleAvatar(
                                         radius: 50,
                                         backgroundColor: Color.fromRGBO(123, 191, 239, 1),
-                                        backgroundImage: NetworkImage(loggedUserProfileUrl),
+                                        backgroundImage: loggedUserProfileUrl!=''?NetworkImage(loggedUserProfileUrl):null,
                                       ),
                                       CircleAvatar(
                                         radius: 50,
@@ -249,7 +247,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              TextButton(
+                                              TextButton(//'네'버튼
                                                   style:TextButton.styleFrom(
                                                     minimumSize: const Size(100,50),
                                                     shape: RoundedRectangleBorder(
@@ -258,7 +256,21 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                   ),
                                                   onPressed: () async {
                                                     try {
-
+                                                      final user = await FirebaseAuth.instance.currentUser!;
+                                                      var result = await user.reauthenticateWithCredential(
+                                                          EmailAuthProvider.credential(
+                                                              email: loggedUserEmail,
+                                                              password: loggedUserPassword
+                                                          )
+                                                      );
+                                                      result.user!.delete();
+                                                      if(coupleId!='') FirebaseFirestore.instance.collection('couple').doc(coupleId).delete();
+                                                      if(coupleChatId!='') FirebaseFirestore.instance.collection('coupleChat').doc(coupleChatId).delete();
+                                                      FirebaseFirestore.instance.collection('user').doc(loggedUserUid).delete();
+                                                      FirebaseAuth.instance.signOut();
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                      Navigator.pushReplacementNamed(context, '/loading');
                                                     } catch(e){
                                                       print(e);
                                                     }
@@ -269,7 +281,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                       fontSize: 16
                                                   ),)
                                               ),
-                                              TextButton(
+                                              TextButton(//'아니요'버튼
                                                   style:TextButton.styleFrom(
                                                       minimumSize: Size(100,50),
                                                       shape: RoundedRectangleBorder(
@@ -304,11 +316,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     )
                   ],
                 ),
-              );
-            },
+              ),
           )
         ),
-      ),
     );
   }
 }
