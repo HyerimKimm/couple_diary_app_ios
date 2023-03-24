@@ -263,11 +263,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                                               password: loggedUserPassword
                                                           )
                                                       );
-                                                      result.user!.delete();
-                                                      if(coupleId!='') FirebaseFirestore.instance.collection('couple').doc(coupleId).delete();
-                                                      if(coupleChatId!='') FirebaseFirestore.instance.collection('coupleChat').doc(coupleChatId).delete();
-                                                      FirebaseFirestore.instance.collection('user').doc(loggedUserUid).delete();
-                                                      FirebaseAuth.instance.signOut();
+                                                      await result.user!.delete();
+                                                      if(coupleId!='') await FirebaseFirestore.instance.collection('couple').doc(coupleId).delete();
+                                                      if(coupleChatId!='') await FirebaseFirestore.instance.collection('coupleChat').doc(coupleChatId).delete();
+                                                      await FirebaseFirestore.instance.collection('user').doc(loggedUserUid).delete();
+                                                      await FirebaseAuth.instance.signOut();
                                                       Navigator.pop(context);
                                                       Navigator.pop(context);
                                                       Navigator.pushReplacementNamed(context, '/loading');
