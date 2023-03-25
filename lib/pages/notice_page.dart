@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);
@@ -25,5 +24,3 @@ class _NoticePageState extends State<NoticePage> {
     );
   }
 }
-
-void doNothing(BuildContext context) {}

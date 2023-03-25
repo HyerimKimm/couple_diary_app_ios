@@ -4,12 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:transition/transition.dart';
 import '../utils/buttons.dart';
 import '../utils/snackBar.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'login_page.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({Key? key}) : super(key: key);
@@ -100,7 +98,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                         radius: 50,
                                         backgroundColor: Color.fromRGBO(123, 191, 239, 0),
                                         backgroundImage: pickedImage!=null?FileImage(pickedImage!):null,
-                                        //
                                       ),
                                     ]
                                   ),

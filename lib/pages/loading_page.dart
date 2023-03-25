@@ -19,7 +19,6 @@ class _LoadingPageState extends State<LoadingPage> {
     super.initState();
     Provider.of<LoggedUserInfo>(context,listen: false).getUserInfo();
     Timer(Duration(seconds: 2), () {
-      print('userUid : ${Provider.of<LoggedUserInfo>(context,listen: false).userUid}');
       Navigator.pushReplacement(
         context,
         Transition(
