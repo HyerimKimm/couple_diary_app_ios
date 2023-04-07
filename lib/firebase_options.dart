@@ -45,17 +45,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAOu8VlufjV4tbQRKR9h1SXD_hCIgzNdQ8',
-    appId: '1:243961147976:web:3d52be5ece29869cb01e7d',
+    appId: '1:243961147976:web:aa2a0df10dfce95fb01e7d',
     messagingSenderId: '243961147976',
     projectId: 'couplediaryapp-fb3c8',
     authDomain: 'couplediaryapp-fb3c8.firebaseapp.com',
     storageBucket: 'couplediaryapp-fb3c8.appspot.com',
-    measurementId: 'G-3NG202Y3SQ',
+    measurementId: 'G-SFPT7N46R5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAVRvs4XeHhhlUHLgcrI6o2smdbIBvoIHE',
-    appId: '1:243961147976:android:ad755b9a71bb22a6b01e7d',
+    appId: '1:243961147976:android:95bc3bbae34493b9b01e7d',
     messagingSenderId: '243961147976',
     projectId: 'couplediaryapp-fb3c8',
     storageBucket: 'couplediaryapp-fb3c8.appspot.com',
@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBovPbXxFTsj9PYZwW_-y0UAaS6XqEF2-0',
-    appId: '1:243961147976:ios:39552596de9b0ad6b01e7d',
+    appId: '1:243961147976:ios:8eeee74624962addb01e7d',
     messagingSenderId: '243961147976',
     projectId: 'couplediaryapp-fb3c8',
     storageBucket: 'couplediaryapp-fb3c8.appspot.com',
@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBovPbXxFTsj9PYZwW_-y0UAaS6XqEF2-0',
-    appId: '1:243961147976:ios:45b791d81ac3cbecb01e7d',
+    appId: '1:243961147976:ios:b125356c4e0dfecbb01e7d',
     messagingSenderId: '243961147976',
     projectId: 'couplediaryapp-fb3c8',
     storageBucket: 'couplediaryapp-fb3c8.appspot.com',

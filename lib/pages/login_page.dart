@@ -2,6 +2,7 @@ import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import '../utils/buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,6 +29,20 @@ class _LoginPageState extends State<LoginPage> {
       _formKey.currentState!.save();
     }
   }
+
+  final BannerAd _bannerAd = BannerAd(
+    size: AdSize.banner,
+    adUnitId: 'ca-app-pub-6773853153851132/9031257149',
+    listener: BannerAdListener(
+        onAdLoaded: (Ad ad){
+          print('loaded ad');
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error){
+          print('load ad failed, $error');
+        }
+    ),
+    request: AdRequest(),
+  )..load();
 
   @override
   Widget build(BuildContext context) {
@@ -187,6 +202,18 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    alignment: Alignment.center,
+                    child: AdWidget(ad: _bannerAd,),
+                    width: _bannerAd.size.width.toDouble(),
+                    height: _bannerAd.size.height.toDouble()+20,
+                  ),
+                ],
               ),
             ],
           ),

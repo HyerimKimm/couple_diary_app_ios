@@ -1,10 +1,11 @@
-import 'dart:io';
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/couple_info/couple_profile_design.dart';
 import 'package:couple_diary_app/couple_info/d_day.dart';
 import 'package:couple_diary_app/couple_info/question.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
+import 'package:couple_diary_app/user_info/admob_info.dart';
 import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
@@ -33,48 +34,6 @@ class _MainPageState extends State<MainPage> {
   String coupleState='';
   String coupleUserUid='';
   DateTime? coupleStartDate;
-  final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
-  final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
-
-  BannerAd? _bannerAd;
-  bool _isLoaded = false;
-  
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if(_isLoaded==false) _loadAd();
-  }
-
-  //애드몹 광고를 불러왔을 때 화면 갱신해줌
-  void _loadAd() async{
-    final Size screenSize = MediaQuery.of(context).size;
-    final AnchoredAdaptiveBannerAdSize? size
-    = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-        screenSize.width.truncate());
-    if(size == null){
-      print('Unable to get height of anchored banner');
-      return;
-    }
-    _bannerAd = BannerAd(
-      size: size,
-      adUnitId: Platform.isAndroid?androidTestUnitId:iosTestUnitId,
-      request: AdRequest(),
-      listener: BannerAdListener(
-          onAdLoaded: (Ad ad){
-            setState(() {
-              _bannerAd = ad as BannerAd;
-              _isLoaded = true;
-            });
-          },
-          onAdFailedToLoad: (Ad ad, LoadAdError error){
-            var logger = Logger(printer: PrettyPrinter());
-            logger.d(error);
-            ad.dispose();
-          }
-      ),
-    );
-    if(_isLoaded==false) _bannerAd!.load();
-  }
 
   //커플 컬랙션의 state에 따라 다른 위젯을 return함
   Widget bodyWidgetReturn(){
@@ -83,7 +42,6 @@ class _MainPageState extends State<MainPage> {
         :senderOrReceiver=='sender'?CoupleSenderUser(coupleId:coupleId,)
         :CoupleReceiverUser(coupleId: coupleId,coupleUserUid: coupleUserUid,);
   }
-
   void getCurrentUser(){
     loggedUserUid = Provider.of<LoggedUserInfo>(context).userUid;
     loggedUserName = Provider.of<LoggedUserInfo>(context).userName;
@@ -112,28 +70,24 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            (_bannerAd !=null && _isLoaded)?
-            Container(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            ):Container(height: 50,),
-            Expanded(
-                child: Container(
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            fit:BoxFit.fill,
-                            image: AssetImage('assets/images/demian.jpeg')
-                        )
-                    ),
-                    child: Center(child:
-                    (_bannerAd !=null && _isLoaded)?bodyWidgetReturn():Container())
-                )
-            ),
-          ]
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image:AssetImage('assets/images/demian.jpeg'),
+          )
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+
+              ),
+              Expanded(
+                  child: Center(child:bodyWidgetReturn())
+              ),
+            ]
+        ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),

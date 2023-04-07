@@ -19,9 +19,9 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
+  final String iosTestUnitId = 'ca-app-pub-6773853153851132/6964116528';
   final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
-
+/*
   BannerAd? _bannerAd;
   bool _isLoaded = false;
 
@@ -63,7 +63,7 @@ class _ListPageState extends State<ListPage> {
     );
 
     if(_isLoaded==false) _bannerAd!.load();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _ListPageState extends State<ListPage> {
       ),
       body: Column(
         children: [
-          (_bannerAd !=null && _isLoaded)?
+          /*(_bannerAd !=null && _isLoaded)?
           Container(
             width: _bannerAd!.size.width.toDouble(),
             height: _bannerAd!.size.height.toDouble(),
@@ -88,7 +88,7 @@ class _ListPageState extends State<ListPage> {
             decoration: const BoxDecoration(
               color: Color.fromRGBO(123, 191, 239, 1),
             ),
-          ),
+          ),*/
           Expanded(
             child: Container(
               decoration: const BoxDecoration(

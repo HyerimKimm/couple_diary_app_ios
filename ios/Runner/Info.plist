@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key> NSCameraUsageDescription</key>
-	<string>We need an access</string>
+	<string>"커플문답"이 내 프로필 사진을 등록하는 기능을 사용하기 위해 라이브러리에 접근하도록 허용합니다.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Couple Diary App</string>
+	<string>커플문답</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -31,9 +31,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We need an access</string>
+	<string>"커플문답"이 내 프로필 사진을 등록하는 기능을 사용하기 위해 라이브러리에 접근하도록 허용합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need an access</string>
+	<string>"커플문답"이 내 프로필 사진을 등록하는 기능을 사용하기 위해 라이브러리에 접근하도록 허용합니다.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
