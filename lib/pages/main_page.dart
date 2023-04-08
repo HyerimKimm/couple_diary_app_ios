@@ -1,16 +1,13 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:couple_diary_app/couple_info/couple_profile_design.dart';
 import 'package:couple_diary_app/couple_info/d_day.dart';
 import 'package:couple_diary_app/couple_info/question.dart';
 import 'package:couple_diary_app/pages/list_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
-import 'package:couple_diary_app/user_info/admob_info.dart';
 import 'package:couple_diary_app/utils/buttons.dart';
 import 'package:couple_diary_app/utils/snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../user_info/logged_user_info.dart';
 import 'chattingroom_page.dart';
 import 'package:provider/provider.dart';
@@ -80,9 +77,6 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-
-              ),
               Expanded(
                   child: Center(child:bodyWidgetReturn())
               ),

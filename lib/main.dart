@@ -8,7 +8,6 @@ import 'package:couple_diary_app/pages/myprofile_page.dart';
 import 'package:couple_diary_app/pages/notice_page.dart';
 import 'package:couple_diary_app/pages/search_couple_page.dart';
 import 'package:couple_diary_app/pages/settings_page.dart';
-import 'package:couple_diary_app/user_info/admob_info.dart';
 import 'package:couple_diary_app/user_info/category.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
@@ -50,9 +49,6 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
             create: (value)=>Category()
-        ),
-        ChangeNotifierProvider(
-            create: (value)=>AdmobInfo()
         ),
       ],
       child: MaterialApp(

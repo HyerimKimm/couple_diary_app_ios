@@ -4,9 +4,7 @@ import 'package:couple_diary_app/user_info/category.dart';
 import 'package:couple_diary_app/user_info/logged_user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 import '../couple_info/answer_list.dart';
 import 'chattingroom_page.dart';
 import 'main_page.dart';
@@ -19,51 +17,19 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  final String iosTestUnitId = 'ca-app-pub-6773853153851132/6964116528';
-  final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
-/*
-  BannerAd? _bannerAd;
-  bool _isLoaded = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if(_isLoaded==false) _loadAd();
-  }
-
-  void _loadAd() async{
-    final Size screenSize = MediaQuery.of(context).size;
-
-    final AnchoredAdaptiveBannerAdSize? size
-        = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-        screenSize.width.truncate());
-
-    if(size == null){
-      print('Unable to get height of anchored banner');
-      return;
-    }
-
-    _bannerAd = BannerAd(
-        size: size,
-        adUnitId: Platform.isAndroid?androidTestUnitId:iosTestUnitId,
-        request: AdRequest(),
-        listener: BannerAdListener(
-          onAdLoaded: (Ad ad){
-            setState(() {
-              _bannerAd = ad as BannerAd;
-              _isLoaded = true;
-            });
-          },
-          onAdFailedToLoad: (Ad ad, LoadAdError error){
-            var logger = Logger(printer: PrettyPrinter());
-            logger.d(error);
-            ad.dispose();
-          }
-        ),
-    );
-
-    if(_isLoaded==false) _bannerAd!.load();
-  }*/
+  final BannerAd _bannerAd = BannerAd(
+    size: AdSize.banner,
+    adUnitId: 'ca-app-pub-6773853153851132/9031257149',
+    listener: BannerAdListener(
+        onAdLoaded: (Ad ad){
+          print('loaded ad');
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error){
+          print('load ad failed, $error');
+        }
+    ),
+    request: AdRequest(),
+  )..load();
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +44,6 @@ class _ListPageState extends State<ListPage> {
       ),
       body: Column(
         children: [
-          /*(_bannerAd !=null && _isLoaded)?
-          Container(
-            width: _bannerAd!.size.width.toDouble(),
-            height: _bannerAd!.size.height.toDouble(),
-            child: AdWidget(ad: _bannerAd!),
-          ):Container(
-            height: 50,
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(123, 191, 239, 1),
-            ),
-          ),*/
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
@@ -96,6 +51,13 @@ class _ListPageState extends State<ListPage> {
               ),
               child: AnswerList(coupleId: coupleId,),
             ),
+          ),
+          Container(
+            margin: EdgeInsets.all(8),
+            alignment: Alignment.center,
+            child: AdWidget(ad: _bannerAd,),
+            width: _bannerAd.size.width.toDouble(),
+            height: _bannerAd.size.height.toDouble(),
           ),
         ],
       ),
