@@ -1,4 +1,8 @@
 # 💕 couple_diary_app
+연인과의 평생의 사랑을 원하는 당신에게 필요한 앱!
+서로에게 진솔한 이야기를 공유하세요.
+- 여러가지 사랑에 관한 질문에 대해 답변을 등록합니다.
+- 등록한 답변은 연인과 나만 공유할 수 있습니다.
 
 # 기술 스텍
 |<img src="https://storage.googleapis.com/cms-storage-bucket/64d67700f8293a9dc827.svg"/>|<img src="https://firebase.google.com/static/images/brand-guidelines/logo-vertical.png" width="75px" height="75px"/>|<img src="https://1000logos.net/wp-content/uploads/2016/10/apple-emblem.jpg" width="75px" height="65px"/>|
